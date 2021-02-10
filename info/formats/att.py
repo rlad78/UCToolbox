@@ -1,7 +1,7 @@
 from .sourcedata import SourceData
 
 
-# GLOBALS
+# CSV HEADER LABELS
 SLA_NBR = 'SLA'
 ADDRESS = 'SLA Address'
 LINE_TYPE = 'USOC'
