@@ -12,3 +12,27 @@ LOCATION = 'LOC'
 class ATT(SourceData):
     def __init__(self, att_data: list[dict]):
         super(ATT, self).__init__(att_data)
+        if not self._data[0][DN].isnumeric():
+            self.__format_phone_lines()
+
+    def __format_phone_lines(self):
+        for entry in self._data:
+            if not entry[DN].isnumeric():
+                entry[DN] = format_phone_number(entry[DN])
+
+    def get_all_in_sla(self, sla: str) -> list[dict]:
+        return self.getall(SLA_NBR, sla)
+
+    def get_all_in_bldg(self, building_code: str) -> list[dict]:
+        return self.parseall(LOCATION, rf'^bldg {building_code}')
+
+
+def format_phone_number(number: str) -> str:
+    ten_digit_number = ''
+    for c in number:
+        if c.isnumeric():
+            ten_digit_number += c
+    if len(ten_digit_number) != 10:
+        return ''
+    else:
+        return ten_digit_number
