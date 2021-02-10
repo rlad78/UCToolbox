@@ -1,3 +1,6 @@
+import re
+
+
 class SourceData:
     def __init__(self, source: list[dict]):
         if source is None or not source:
@@ -12,6 +15,7 @@ class SourceData:
     def get(self, category: str, value: str) -> dict:
         """
         Returns first found entry that matches the value in the specified category.
+
         :param category: Any str value matching a category in the csv header. Method will raise exception if
                          category is not within the csv header.
         :param value: String to search against.
@@ -30,6 +34,7 @@ class SourceData:
         """
         Same functionality as self.get(), but returns all matching entries in a list.
         :param category: Any str value matching a category in the csv header. Method will raise exception if
+
                          category is not within the csv header.
         :param value: String to search against.
         :return: A dict-list of all entries satisfying the category value constraint. Returns an empty list [] if no
@@ -46,6 +51,7 @@ class SourceData:
         """
         Uses self.get() to find the first entry matching the category value condition, then returns that entries'
         wanted category data.
+
         :param wanted: Any str value matching a category in the csv header. Method will raise exception if
                        category is not within the csv header.
         :param category: Any str value matching a category in the csv header. Method will raise exception if
@@ -63,6 +69,7 @@ class SourceData:
         """
         Same functionality as self.find(), but uses self.getall() to get a list of all matching entries.
         Returns the wanted data for all entries found.
+
         :param wanted: Any str value matching a category in the csv header. Method will raise exception if
                        category is not within the csv header.
         :param category: Any str value matching a category in the csv header. Method will raise exception if
@@ -78,6 +85,12 @@ class SourceData:
             return [d[wanted] for d in entries]
 
     def query(self, required_matches: dict) -> list[dict]:
+        """
+        Finds entries that match all key-value pairs in required_matches. Returns empty list [] if none found.
+
+        :param required_matches: A dict whose keys all match a category in the csv header
+        :return: List of all matching entries. Empty list if no entries found.
+        """
         self.__check_category(*list(required_matches.keys()))
         matching_entries: list[dict] = []
         for entry in self._data:
@@ -90,9 +103,46 @@ class SourceData:
                 matching_entries.append(entry)  # add entry to the matching list if all of the values matched
         return matching_entries
 
+    def parse(self, category: str, regex: str) -> dict:
+        """
+        Same functionality as self.get(), but uses regex matching instead of str matching.
+
+        :param category: Any str value matching a category in the csv header. Method will raise exception if
+                         category is not within the csv header.
+        :param regex: Any regular expression except for ''. self.parse() will automatically return empty
+                      dict {} if blank regex is provided.
+        :return: The dict (entry) satisfying the regex constraint. Returns an empty dict {} if no
+                 matching entry is found.
+        """
+        searcher = re.compile(regex, re.IGNORECASE)
+        for entry in self._data:
+            if re.search(searcher, entry[category]):
+                return entry
+        else:
+            return {}
+
+    def parseall(self, category: str, regex: str) -> list[dict]:
+        """
+        Same functionality as self.getall(), but uses regex matching instead of str matching.
+
+        :param category: Any str value matching a category in the csv header. Method will raise exception if
+                         category is not within the csv header.
+        :param regex: Any regular expression except for ''. self.parse() will automatically return empty
+                      dict {} if blank regex is provided.
+        :return: List of entries satisfying the regex constraint. Returns an empty list [] if no
+                 matching entry is found.
+        """
+        searcher = re.compile(regex, re.IGNORECASE)
+        matching_entries: list[dict] = []
+        for entry in self._data:
+            if re.search(searcher, entry[category]):
+                matching_entries.append(entry)
+        return matching_entries
+
     def __check_category(self, *args):
         """
         Checks that each argument exists as a category in the csv header.
+
         :param args: Any strings
         :type args: str
         :return: None
