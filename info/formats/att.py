@@ -1,3 +1,6 @@
+from .sourcedata import SourceData
+
+
 # GLOBALS
 SLA_NBR = 'SLA'
 ADDRESS = 'SLA Address'
@@ -6,10 +9,6 @@ DN = 'TN'
 LOCATION = 'LOC'
 
 
-class ATT:
+class ATT(SourceData):
     def __init__(self, att_data: list[dict]):
-        self._data = att_data
-
-    def __iter__(self):
-        for entry in self._data:
-            yield entry
+        super(ATT, self).__init__(att_data)
