@@ -8,4 +8,8 @@ LOCATION = 'LOC'
 
 class ATT:
     def __init__(self, att_data: list[dict]):
-        pass
+        self._data = att_data
+
+    def __iter__(self):
+        for entry in self._data:
+            yield entry
