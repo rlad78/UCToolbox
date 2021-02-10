@@ -15,4 +15,4 @@ class MYSOFT(SourceData):
         super(MYSOFT, self).__init__(mysoft_data)
 
     def get_line(self, phone_number: str) -> dict:
-        return self.get(DN, phone_number)
+        return self._get(DN, phone_number)

@@ -30,7 +30,7 @@ class HR(SourceData):
         :param dept_num: If not blank, used to make sure found user is in given dept
         :return: user id of matching employee if found, empty str otherwise
         """
-        results: list[dict] = self.getall(DN, phone_number)
+        results: list[dict] = self._getall(DN, phone_number)
         if len(results) == 1 and results[0][DUPLICATE] != 'YES':
             if dept_num and results[0][DEPT] != dept_num:
                 return ''

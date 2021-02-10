@@ -13,4 +13,4 @@ class VOIP(SourceData):
         super(VOIP, self).__init__(voip_data)
 
     def get_phone(self, phone_number: str) -> dict:
-        return self.get(DN, phone_number)
+        return self._get(DN, phone_number)

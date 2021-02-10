@@ -21,10 +21,13 @@ class ATT(SourceData):
                 entry[DN] = format_phone_number(entry[DN])
 
     def get_all_in_sla(self, sla: str) -> list[dict]:
-        return self.getall(SLA_NBR, sla)
+        return self._getall(SLA_NBR, sla)
 
     def get_all_in_bldg(self, building_code: str) -> list[dict]:
-        return self.parseall(LOCATION, rf'^bldg {building_code}')
+        return self._parseall(LOCATION, rf'^bldg {building_code}')
+
+    def get_line(self, phone_number: str) -> dict:
+        return self._get(DN, phone_number)
 
 
 def format_phone_number(number: str) -> str:

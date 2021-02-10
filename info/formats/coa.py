@@ -12,7 +12,7 @@ class COA(SourceData):
         super(COA, self).__init__(coa_data)
 
     def find_fiman(self, department_id: str):
-        return self.find(FIMAN, DEPT_ID, department_id)
+        return self._find(FIMAN, DEPT_ID, department_id)
 
     def find_all_fiman_dept(self, financial_manager: str):
-        return self.findall(DEPT_ID, FIMAN, financial_manager)
+        return self._findall(DEPT_ID, FIMAN, financial_manager)

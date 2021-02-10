@@ -14,15 +14,15 @@ class SLA(SourceData):
 
     def get_bldg_name(self, sla_number='', building_id='') -> str:
         if sla_number:
-            return self.find(NAME, SLA_NBR, sla_number)
+            return self._find(NAME, SLA_NBR, sla_number)
         elif building_id:
-            return self.find(NAME, BLDG_ID, building_id)
+            return self._find(NAME, BLDG_ID, building_id)
         else:
             print('[SLA.get_bldg_name] tried to search with blank search values')
             return ''
 
     def get_building_sla(self, building_id: str) -> str:
-        return self.find(SLA_NBR, BLDG_ID, building_id)
+        return self._find(SLA_NBR, BLDG_ID, building_id)
 
     def get_building_id(self, sla_number: str) -> str:
-        return self.find(BLDG_ID, SLA_NBR, sla_number)
+        return self._find(BLDG_ID, SLA_NBR, sla_number)

@@ -12,7 +12,7 @@ class SourceData:
         for entry in self._data:
             yield entry
 
-    def get(self, category: str, value: str) -> dict:
+    def _get(self, category: str, value: str) -> dict:
         """
         Returns first found entry that matches the value in the specified category.
 
@@ -30,7 +30,7 @@ class SourceData:
         else:
             return {}
 
-    def getall(self, category: str, value: str) -> list[dict]:
+    def _getall(self, category: str, value: str) -> list[dict]:
         """
         Same functionality as self.get(), but returns all matching entries in a list.
         :param category: Any str value matching a category in the csv header. Method will raise exception if
@@ -47,7 +47,7 @@ class SourceData:
                 matching_entries.append(entry)
         return matching_entries
 
-    def find(self, wanted: str, category: str, value: str) -> str:
+    def _find(self, wanted: str, category: str, value: str) -> str:
         """
         Uses self.get() to find the first entry matching the category value condition, then returns that entries'
         wanted category data.
@@ -61,11 +61,11 @@ class SourceData:
         """
         self.__check_category(wanted, category)
         try:
-            return self.get(category, value)[wanted]
+            return self._get(category, value)[wanted]
         except KeyError:
             return ''
 
-    def findall(self, wanted: str, category: str, value: str) -> list[str]:
+    def _findall(self, wanted: str, category: str, value: str) -> list[str]:
         """
         Same functionality as self.find(), but uses self.getall() to get a list of all matching entries.
         Returns the wanted data for all entries found.
@@ -78,13 +78,13 @@ class SourceData:
         :return: String-list of wanted data. Will return empty list [] if no matching entries are found.
         """
         self.__check_category(wanted, category)
-        entries: list[dict] = self.getall(category, value)
+        entries: list[dict] = self._getall(category, value)
         if not entries:
             return []
         else:
             return [d[wanted] for d in entries]
 
-    def query(self, required_matches: dict) -> list[dict]:
+    def _query(self, required_matches: dict) -> list[dict]:
         """
         Finds entries that match all key-value pairs in required_matches. Returns empty list [] if none found.
 
@@ -103,7 +103,7 @@ class SourceData:
                 matching_entries.append(entry)  # add entry to the matching list if all of the values matched
         return matching_entries
 
-    def parse(self, category: str, regex: str) -> dict:
+    def _parse(self, category: str, regex: str) -> dict:
         """
         Same functionality as self.get(), but uses regex matching instead of str matching.
 
@@ -121,7 +121,7 @@ class SourceData:
         else:
             return {}
 
-    def parseall(self, category: str, regex: str) -> list[dict]:
+    def _parseall(self, category: str, regex: str) -> list[dict]:
         """
         Same functionality as self.getall(), but uses regex matching instead of str matching.
 
