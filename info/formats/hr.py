@@ -1,23 +1,22 @@
 from .sourcedata import SourceData
 
 
-# CSV HEADER LABELS
-DEPT = 'DEPTID'
-NAME = 'NAME'
-USERID = 'USERNAME'
-DN = 'WORK_PHONE'
-DUPLICATE = 'IS DUPLICATE?'
-
-
 class HR(SourceData):
+    # CSV HEADER LABELS
+    DEPT = 'DEPTID'
+    NAME = 'NAME'
+    USERID = 'USERNAME'
+    DN = 'WORK_PHONE'
+    DUPLICATE = 'IS DUPLICATE?'
+
     def __init__(self, hr_data: list[dict]):
         super(HR, self).__init__(hr_data)
-        if not self._data[0][USERID].islower():
+        if not self._data[0][self.USERID].islower():
             self.__userid_lowercase()
 
     def __userid_lowercase(self):
         for entry in self._data:
-            entry[USERID] = entry[USERID].lower()
+            entry[self.USERID] = entry[self.USERID].lower()
 
     def find_user(self, phone_number: str, dept_num="") -> str:
         """
@@ -30,11 +29,11 @@ class HR(SourceData):
         :param dept_num: If not blank, used to make sure found user is in given dept
         :return: user id of matching employee if found, empty str otherwise
         """
-        results: list[dict] = self._getall(DN, phone_number)
-        if len(results) == 1 and results[0][DUPLICATE] != 'YES':
-            if dept_num and results[0][DEPT] != dept_num:
+        results: list[dict] = self._getall(self.DN, phone_number)
+        if len(results) == 1 and results[0][self.DUPLICATE] != 'YES':
+            if dept_num and results[0][self.DEPT] != dept_num:
                 return ''
             else:
-                return results[0][USERID]
+                return results[0][self.USERID]
         else:
             return ''
