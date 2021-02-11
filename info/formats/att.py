@@ -1,4 +1,5 @@
 from .sourcedata import SourceData
+import re
 
 
 class ATT(SourceData):
@@ -27,6 +28,18 @@ class ATT(SourceData):
 
     def get_line(self, phone_number: str) -> dict:
         return self._get(self.DN, phone_number)
+
+    def split_loc(self, loc: str) -> (str, str):
+        rm = ''
+        bldg = ''
+
+        bldg_match = re.search(r'BLDG (\S*);', loc)
+        rm_match = re.search(r'RM (.*)$', loc)
+        if bldg_match is not None:
+            bldg = bldg_match.group(1)
+        if rm_match is not None:
+            rm = rm_match.group(1)
+        return bldg, rm
 
 
 def format_phone_number(number: str) -> str:
