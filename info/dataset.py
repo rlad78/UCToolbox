@@ -100,3 +100,17 @@ class Dataset:
             'Busy Lamp Fields': ', '.join(self.blf.get_blfs(phone_number)),
             'Call Pickup Group': ', '.join(self.cpg.get_cpg_lines(phone_number)),
         }
+
+    def get_location_info(self, building_id='', sla='') -> dict:
+        if not building_id and not sla:
+            return {}
+        this_location: SLAEntry = self.sla.get_building(building_id, sla)
+        if this_location is None:
+            return {}
+        else:
+            return {
+                "Name": this_location.building,
+                "Address": this_location.address,
+                "SLA": this_location.sla,
+                'Building ID': this_location.bldg_id
+            }
