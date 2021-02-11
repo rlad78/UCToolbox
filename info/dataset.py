@@ -2,6 +2,10 @@ from .formats import *
 
 
 class Dataset:
+    """
+    This should be used for BUILDING THE DATABASE ONLY!!
+    All other searching should be done in database.py
+    """
     def __init__(self, data_members: dict):
         try:
             self.att = ATT(data_members['ATT'])
@@ -58,3 +62,27 @@ class Dataset:
                     'Financial Manager': coa_info.financial_manager
                 })
                 return line_info
+
+    def get_centrex_ownership(self, phone_number: str) -> dict:
+        line_info: dict = {}
+        mysoft_info: MYSOFTEntry = self.mysoft.get_line(phone_number)
+        if mysoft_info is None:
+            return {}
+
+        guess_name = mysoft_info.name
+        guess_dept = mysoft_info.dept
+
+        real_user: HREntry = self.hr.find_user(phone_number, dept_num=guess_dept, guess_name=guess_name)
+        if real_user is None:
+            return {
+                'Name': mysoft_info.name,
+                'Dept. Code': mysoft_info.dept
+            }
+        else:
+            return {
+                'Name': real_user.shortname,
+                'User ID': real_user.user_id,
+                'Dept. Code': real_user.dept_id,
+                'mysoft_name': guess_name,
+                'hr_full_name': real_user.name
+            }
