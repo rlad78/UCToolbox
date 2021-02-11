@@ -33,25 +33,26 @@ class HR(SourceData):
         for entry in self._data:
             entry[USERID] = entry[USERID].lower()
 
-    def find_user(self, phone_number: str, dept_num="") -> str:
-        """
-        Searches for an employee with a matching phone number and returns the
-        user id of the employee. If search comes back with multiple results,
-        returns empty str '' since duplicate number assignments have shown to be
-        'main line' phone numbers and not tied to the user.
+    def find_user(self, phone_number: str, dept_num="", guess_name='') -> Union[HREntry, None]:
+        # first, try to find a match with a dn
+        dn_match = self._get(DN, phone_number)
+        if dn_match:
+            return HREntry(dn_match)
 
-        :param phone_number: Any str of length 10
-        :param dept_num: If not blank, used to make sure found user is in given dept
-        :return: user id of matching employee if found, empty str otherwise
-        """
-        results: list[dict] = self._getall(DN, phone_number)
-        if len(results) == 1 and results[0][DUPLICATE] != 'YES':
-            if dept_num and results[0][DEPT] != dept_num:
-                return ''
+        # if no match, try to use dept_num to find all dept employees and do a fuzzy match
+        if not dept_num or not guess_name:
+            return None
+        dept_matches: list[dict] = self._getall(DEPT, dept_num)
+        dept_names: list[str] = [d[NAME] for d in dept_matches]
+        winning_name = fuzzy_winner(guess_name, dept_names)
+        if winning_name in dept_names:
+            for user in dept_matches:
+                if user[NAME] == winning_name:
+                    return HREntry(user)
             else:
-                return results[0][USERID]
+                raise Exception(f'[HR.find] winning user "{winning_name}" not in matches:\n{dept_matches}')
         else:
-            return ''
+            return None
 
     def get_user(self, phone_number='', user_id='') -> Union[HREntry, None]:
         if user_id:
