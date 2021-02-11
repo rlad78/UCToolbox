@@ -16,3 +16,8 @@ class Line:
         self.info['Phone Number'] = directory_number
         self.dn = directory_number
 
+    def update(self, new_info: dict) -> None:
+        for key in new_info:
+            if key not in self._categories:
+                raise Exception(f'[Line] tried to enter a non-standard category "{key}"')
+        self.info.update(new_info)
