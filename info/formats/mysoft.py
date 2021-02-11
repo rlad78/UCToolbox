@@ -19,6 +19,7 @@ class MYSOFTEntry(Entry):
         self.floor = mysoft_entry[FLOOR]
         self.room = mysoft_entry[ROOM]
         self.bldg_id = mysoft_entry[BLDG_ID]
+        self.dept = dept_from_gl(self.gl)
 
 
 class MYSOFT(SourceData):
@@ -31,3 +32,12 @@ class MYSOFT(SourceData):
             return MYSOFTEntry(this_line)
         else:
             return None
+
+
+def dept_from_gl(gl: str) -> str:
+    gl_parts: list[str] = gl.split('-')
+    for part in gl_parts:
+        if len(part) == 4 and part != '7009':
+            return part
+    else:
+        return ''
