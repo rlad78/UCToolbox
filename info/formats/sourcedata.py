@@ -154,8 +154,8 @@ class SourceData:
     def _format_phone_numbers(self, *categories) -> None:
         for category in categories:
             for entry in self._data:
-                if not entry[category].isnumeric():
-                    entry[category] = format_dn(entry[category])
+                # if not entry[category].isnumeric():
+                entry[category] = format_dn(entry[category])
 
 
 class Entry:
