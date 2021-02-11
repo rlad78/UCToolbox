@@ -151,6 +151,11 @@ class SourceData:
             if category not in self._categories:
                 raise Exception(f'{category} is not a valid category for {self.__class__.__name__}\n{self._categories}')
 
+    def _format_phone_numbers(self, category: str) -> None:
+        for entry in self._data:
+            if not entry[category].isnumeric():
+                entry[category] = format_dn(entry[category])
+
 
 class Entry:
     def __init__(self, data: dict):
@@ -159,7 +164,7 @@ class Entry:
     def __getitem__(self, item):
         try:
             return self.data[item]
-        except:
+        except KeyError:
             raise KeyError(f'{self.__class__.__name__} does not contain "{item}" value')
 
     def __iter__(self):
@@ -174,3 +179,14 @@ class Entry:
 
     def items(self):
         return self.data.items()
+
+
+def format_dn(number: str) -> str:
+    ten_digit_number = ''
+    for c in number:
+        if c.isnumeric():
+            ten_digit_number += c
+    if len(ten_digit_number) != 10:
+        return ''
+    else:
+        return ten_digit_number

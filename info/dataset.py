@@ -64,7 +64,6 @@ class Dataset:
                 return line_info
 
     def get_centrex_ownership(self, phone_number: str) -> dict:
-        line_info: dict = {}
         mysoft_info: MYSOFTEntry = self.mysoft.get_line(phone_number)
         if mysoft_info is None:
             return {}
@@ -86,3 +85,6 @@ class Dataset:
                 'mysoft_name': guess_name,
                 'hr_full_name': real_user.name
             }
+
+    def get_centrex_cxm(self, phone_number: str) -> dict:
+        pass
