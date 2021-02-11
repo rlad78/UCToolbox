@@ -1,11 +1,20 @@
-from .sourcedata import SourceData
-
+from .sourcedata import SourceData, Entry
+from typing import Union
 
 # CSV HEADER LABELS
 NAME = 'BUILDING'
 SLA_NBR = 'SLA NBR'
 ADDRESS = '911 ADDRESS'
 BLDG_ID = 'BUILDING ID'
+
+
+class SLAEntry(Entry):
+    def __init__(self, sla_entry: dict):
+        super(SLAEntry, self).__init__(sla_entry)
+        self.building = sla_entry[NAME]
+        self.sla = sla_entry[SLA_NBR]
+        self.address = sla_entry[ADDRESS]
+        self.bldg_id = sla_entry[BLDG_ID]
 
 
 class SLA(SourceData):
@@ -26,3 +35,18 @@ class SLA(SourceData):
 
     def get_building_id(self, sla_number: str) -> str:
         return self._find(BLDG_ID, SLA_NBR, sla_number)
+
+    def get_building(self, sla_number='', building_id='') -> Union[SLAEntry, None]:
+        if building_id:
+            this_building = self._get(BLDG_ID, building_id)
+            if not this_building and sla_number:
+                this_building = self._get(SLA_NBR, sla_number)
+        elif sla_number:
+            this_building = self._get(SLA_NBR, sla_number)
+        else:
+            raise Exception('[SLA.get_building] tried to get building with no criteria')
+
+        if this_building:
+            return SLAEntry(this_building)
+        else:
+            return None

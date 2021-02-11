@@ -1,5 +1,5 @@
-from .sourcedata import SourceData
-
+from .sourcedata import SourceData, Entry
+from typing import Union
 
 # CSV HEADER LABELS
 DN = 'UserID'
@@ -10,9 +10,24 @@ ROOM = 'Room'
 BLDG_ID = 'BuildingId'
 
 
+class MYSOFTEntry(Entry):
+    def __init__(self, mysoft_entry: dict):
+        super(MYSOFTEntry, self).__init__(mysoft_entry)
+        self.dn = mysoft_entry[DN]
+        self.name = mysoft_entry[NAME]
+        self.gl = mysoft_entry[GL]
+        self.floor = mysoft_entry[FLOOR]
+        self.room = mysoft_entry[ROOM]
+        self.bldg_id = mysoft_entry[BLDG_ID]
+
+
 class MYSOFT(SourceData):
     def __init__(self, mysoft_data: list[dict]):
         super(MYSOFT, self).__init__(mysoft_data)
 
-    def get_line(self, phone_number: str) -> dict:
-        return self._get(DN, phone_number)
+    def get_line(self, phone_number: str) -> Union[MYSOFTEntry, None]:
+        this_line = self._get(DN, phone_number)
+        if this_line:
+            return MYSOFTEntry(this_line)
+        else:
+            return None
