@@ -151,10 +151,11 @@ class SourceData:
             if category not in self._categories:
                 raise Exception(f'{category} is not a valid category for {self.__class__.__name__}\n{self._categories}')
 
-    def _format_phone_numbers(self, category: str) -> None:
-        for entry in self._data:
-            if not entry[category].isnumeric():
-                entry[category] = format_dn(entry[category])
+    def _format_phone_numbers(self, *categories) -> None:
+        for category in categories:
+            for entry in self._data:
+                if not entry[category].isnumeric():
+                    entry[category] = format_dn(entry[category])
 
 
 class Entry:
