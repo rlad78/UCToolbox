@@ -150,3 +150,27 @@ class SourceData:
         for category in args:
             if category not in self._categories:
                 raise Exception(f'{category} is not a valid category for {self.__class__.__name__}\n{self._categories}')
+
+
+class Entry:
+    def __init__(self, data: dict):
+        self.data = data
+
+    def __getitem__(self, item):
+        try:
+            return self.data[item]
+        except:
+            raise KeyError(f'{self.__class__.__name__} does not contain "{item}" value')
+
+    def __iter__(self):
+        for key, value in self.data.items():
+            yield key, value
+
+    def keys(self):
+        return self.data.keys()
+
+    def values(self):
+        return self.data.values()
+
+    def items(self):
+        return self.data.items()
