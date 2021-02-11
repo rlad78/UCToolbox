@@ -183,11 +183,17 @@ class Entry:
 
 
 def format_dn(number: str) -> str:
-    ten_digit_number = ''
+    digits = ''
     for c in number:
         if c.isnumeric():
-            ten_digit_number += c
-    if len(ten_digit_number) != 10:
-        return ''
+            digits += c
+    if len(digits) == 10:
+        return digits
+    elif len(digits) == 12 and digits[:2] == '91':
+        return digits[2:]
+    elif len(digits) == 8 and digits[:1] == '9':
+        return '864' + digits[1:]
+    elif len(digits) == 7 and digits[:3] == '656':
+        return '864' + digits
     else:
-        return ten_digit_number
+        return ''
