@@ -14,6 +14,12 @@ class Dataset:
             self.mysoft = MYSOFT(data_members['MYSOFT'])
             self.sla = SLA(data_members['SLA'])
             self.voip = VOIP(data_members['VOIP'])
+
+            self.blf = BLF(data_members['BLF'])
+            self.bset = BSET(data_members['BSET'])
+            self.cfd = CFD(data_members['CFD'])
+            self.cpg = CPG(data_members['CPG'])
+            self.la = LA(data_members['LA'])
         except KeyError as e:
             raise Exception(f'[Dataset] missing data member {e.args[0]}')
 
@@ -87,4 +93,10 @@ class Dataset:
             }
 
     def get_centrex_cxm(self, phone_number: str) -> dict:
-        pass
+        return {
+            'Business Set?': 'Yes' if self.bset.is_bset(phone_number) else '',
+            'Forward All': self.cfd.get_forwarding(phone_number),
+            'Line Appearances': ', '.join(self.la.get_las(phone_number)),
+            'Busy Lamp Fields': ', '.join(self.blf.get_blfs(phone_number)),
+            'Call Pickup Group': ', '.join(self.cpg.get_cpg_lines(phone_number)),
+        }
