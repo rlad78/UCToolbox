@@ -1,5 +1,5 @@
-from .sourcedata import SourceData
-
+from .sourcedata import SourceData, Entry
+from typing import Union
 
 # CSV HEADER LABELS
 DEPT = 'DEPTID'
@@ -7,6 +7,19 @@ NAME = 'NAME'
 USERID = 'USERNAME'
 DN = 'WORK_PHONE'
 DUPLICATE = 'IS DUPLICATE?'
+
+
+class HREntry(Entry):
+    def __init__(self, hr_entry: dict):
+        super(HREntry, self).__init__(hr_entry)
+        self.dept_id = hr_entry[DEPT]
+        self.name = hr_entry[NAME]
+        self.user_id = hr_entry[USERID]
+        self.dn = hr_entry[DN]
+        self.is_duplicate = True if hr_entry[DUPLICATE] == 'YES' else False
+        # TODO: get multiple versions of names using name str tools from VBAReplacer
+        # self.shortname
+        # self.fullname
 
 
 class HR(SourceData):
@@ -38,3 +51,18 @@ class HR(SourceData):
                 return results[0][USERID]
         else:
             return ''
+
+    def get_user(self, phone_number='', user_id='') -> Union[HREntry, None]:
+        if user_id:
+            this_user = self._get(USERID, user_id)
+            if not this_user and phone_number:
+                this_user = self._get(DN, phone_number)
+        elif phone_number:
+            this_user = self._get(DN, phone_number)
+        else:
+            raise Exception('[HR.get_user] tried to get user with no criteria')
+
+        if this_user:
+            return HREntry(this_user)
+        else:
+            return None

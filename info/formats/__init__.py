@@ -1,6 +1,6 @@
-from .att import ATT
-from .coa import COA
-from .hr import HR
-from .mysoft import MYSOFT
-from .sla import SLA
-from .voip import VOIP
+from .att import ATT, ATTEntry
+from .coa import COA, COAEntry
+from .hr import HR, HREntry
+from .mysoft import MYSOFT, MYSOFTEntry
+from .sla import SLA, SLAEntry
+from .voip import VOIP, VOIPEntry
