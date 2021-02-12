@@ -38,6 +38,10 @@ class Line:
             out += add_to_out
         return out
 
+    def __iter__(self):
+        for k, v in self.info.items()
+            yield k, v
+
     def update(self, new_info: dict) -> None:
         for key in new_info:
             if key not in self._categories:
