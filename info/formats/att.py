@@ -48,7 +48,7 @@ class ATT(SourceData):
             return None
 
     def list_all_lines(self) -> list[str]:
-        return [x[DN] for x in self._data]
+        return list(set([x[DN] for x in self._data]))
 
 
 def split_loc(loc: str) -> (str, str):
