@@ -116,3 +116,13 @@ class Dataset:
                 "SLA": this_location.sla,
                 'Building ID': this_location.bldg_id
             }
+
+    def get_line_all(self, phone_number: str) -> dict:
+        line_info: dict = {'Phone Number': phone_number}
+        line_info.update(self.get_line_info(phone_number))
+        line_info.update(self.get_dept_info(phone_number))
+        if line_info['line_type'] == 'VOIP':
+            line_info.update(self.get_voip_info(phone_number))
+        else:
+            line_info.update(self.get_centrex_cxm(phone_number))
+            line_info.update(self.get_centrex_ownership(phone_number))
