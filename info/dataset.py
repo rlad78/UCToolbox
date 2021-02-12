@@ -31,6 +31,7 @@ class Dataset:
         if att_info is None:
             return line_info
         else:
+            line_info['line_type'] = att_info.line_type
             line_info['bldg_id'] = att_info.bldg_code
             line_info['Floor'] = att_info.floor
             line_info['Room'] = att_info.room
@@ -46,7 +47,7 @@ class Dataset:
             return {
                 'User ID': voip_info.user_id,
                 'Name': voip_info.description,
-                'Device Mode': '',  # TODO: get method for finding device model
+                'Device Model': '',  # TODO: get method for finding device model
                 'Phone Name': voip_info.device_name
             }
 

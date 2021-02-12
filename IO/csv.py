@@ -38,6 +38,9 @@ def from_list(file_name: str, head: list[str], lines: list[list[str]]):
 
 
 def get_file_stack(files: list[tuple[str, str]]) -> dict:
+    """
+    :param files: list of (label, file) tuples
+    """
     futures = {}
     return_dicts = {}
     getter = concurrent.futures.ThreadPoolExecutor()

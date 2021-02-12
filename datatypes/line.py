@@ -25,15 +25,15 @@ class Line:
             'line_type': self.info["line_type"]
         }
         out: str = f'[{title["Phone Number"]}]: <{title["line_type"]}> '
-        out += f'"{title["Name"]}" in {title["Building"]} {title["Room"]} ({title["sla_nbr"]})'
+        out += f'"{title["Name"]}" in {title["Building"]} {title["Room"]} (SLA {title["sla_nbr"]})'
         out += '\n' + spacer
 
         total_print = 0
         for key, value in {k: v for k, v in self.info.items() if k not in title.keys() and v != ''}.items():
-            if total_print + len(key) + len(value) + 5 > char_width:
+            if total_print + len(key) + len(value) + 6 > char_width:
                 out += '\n' + spacer
                 total_print = 0
-            add_to_out = f'[{key}]: {value} '
+            add_to_out = f'[{key}]: {value}  '
             total_print += len(add_to_out)
             out += add_to_out
         return out
