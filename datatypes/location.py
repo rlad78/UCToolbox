@@ -7,7 +7,7 @@ from pathvalidate import sanitize_filename
 class Location:
     def __init__(self, building_data: dict = None):
         self._categories: list[str] = [
-            "Building", "Building ID",
+            "Name", "Building ID",
             "SLA", "Address"
         ]
         self._info = {k: '' for k in self._categories}

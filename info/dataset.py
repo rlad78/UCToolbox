@@ -1,4 +1,5 @@
 from .formats import *
+from datatypes import Location
 
 
 class Dataset:
@@ -119,6 +120,11 @@ class Dataset:
                 "SLA": this_location.sla,
                 'Building ID': this_location.bldg_id
             }
+
+    def get_all_locations(self) -> list[Location]:
+        loc_flat: dict[str, dict] = {}
+        for entry in self.sla:
+            pass  # TODO: go through each element and add loc_flat[SLA]
 
     def get_line_all(self, phone_number: str) -> dict:
         line_info: dict = {'Phone Number': phone_number}
