@@ -14,7 +14,7 @@ def csv_to_dicts(file_name: str) -> list[dict]:
 
 
 def csv_from_dicts(file_name: str, dict_lines: list[dict]):
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='w', newline='') as csv_file:
         fieldnames: list[str] = list(dict_lines[0].keys())
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
@@ -24,7 +24,7 @@ def csv_from_dicts(file_name: str, dict_lines: list[dict]):
 
 
 def csv_from_list(file_name: str, head: list[str], lines: list[list[str]]):
-    with open(file_name, mode='w') as csv_file:
+    with open(file_name, mode='w', newline='') as csv_file:
         writer = csv.writer(csv_file, delimiter=",")
         writer.writerow(head)
         writer.writerows(lines)

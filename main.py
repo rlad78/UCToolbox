@@ -49,5 +49,5 @@ def search_line_demo(phone_number: str) -> Line:
 
 
 if __name__ == '__main__':
-    # csv_from_dicts('ucdb.csv', generate_db(load_dataset()))
-    print(search_line_demo(input('Phone number: ')))
+    csv_from_dicts('ucdb.csv', generate_db(load_dataset()))
+    # print(search_line_demo(input('Phone number: ')))

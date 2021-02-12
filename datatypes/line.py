@@ -42,6 +42,9 @@ class Line:
         for k, v in self.info.items():
             yield k, v
 
+    def __getitem__(self, item):
+        return self.info[item]
+
     def update(self, new_info: dict) -> None:
         for key in new_info:
             if key not in self._categories:
