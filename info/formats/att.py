@@ -50,6 +50,9 @@ class ATT(SourceData):
     def list_all_lines(self) -> list[str]:
         return list(set([x[DN] for x in self._data]))
 
+    def list_all_loc(self) -> list[tuple[str, str]]:
+        return [(x[SLA_NBR], split_loc(x[LOCATION])[0]) for x in self._data]
+
 
 def split_loc(loc: str) -> (str, str):
     rm = ''

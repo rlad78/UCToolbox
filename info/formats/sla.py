@@ -15,6 +15,8 @@ class SLAEntry(Entry):
         self.sla = sla_entry[SLA_NBR]
         self.address = sla_entry[ADDRESS]
         self.bldg_id = sla_entry[BLDG_ID]
+        if self.building == '':
+            self.building = "SLA " + self.sla
 
 
 class SLA(SourceData):

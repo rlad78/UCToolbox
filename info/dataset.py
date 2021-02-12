@@ -122,9 +122,16 @@ class Dataset:
             }
 
     def get_all_locations(self) -> list[Location]:
-        loc_flat: dict[str, dict] = {}
-        for entry in self.sla:
-            pass  # TODO: go through each element and add loc_flat[SLA]
+        loc_flat: dict[str, Location] = {}
+        for sla_num, bldg_id in self.att.list_all_loc():
+            if sla_num not in loc_flat:
+                loc = self.sla.get_building(sla_number=sla_num)
+                if loc is not None:
+                    loc_flat[sla_num] = Location(loc.data)
+            elif bldg_id not in loc_flat[sla_num].bldg_id.split(", "):
+                loc_flat[sla_num].append_bldg_id(bldg_id)
+        return list(loc_flat.values())
+
 
     def get_line_all(self, phone_number: str) -> dict:
         line_info: dict = {'Phone Number': phone_number}
