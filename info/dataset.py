@@ -35,6 +35,7 @@ class Dataset:
             line_info['Floor'] = att_info.floor
             line_info['Room'] = att_info.room
             line_info['sla_nbr'] = att_info.sla
+            line_info['Building'] = self.sla.get_bldg_name(sla_number=att_info.sla, building_id=att_info.bldg_code)
             return line_info
 
     def get_voip_info(self, phone_number: str) -> dict:
