@@ -1,8 +1,5 @@
-import re
-
-
 class Line:
-    def __init__(self, directory_number: str, dataset: dict):
+    def __init__(self, directory_number: str):
         self._categories: list[str] = [
             "Phone Number", "User ID", "Name", "Department", "Dept. Code", "Financial Manager", "Building", "Floor",
             "Room", "Business Set?", "Forward All", "Line Appearances", "Busy Lamp Fields", "Call Pickup Group",
@@ -15,6 +12,31 @@ class Line:
         }
         self.info['Phone Number'] = directory_number
         self.dn = directory_number
+
+    def __str__(self):
+        spacer = ' ' * 14  # '[864656XXXX]: '
+        char_width = 120
+        title: dict = {
+            'Phone Number': self.info["Phone Number"],
+            'Name': self.info["Name"],
+            'Building': self.info["Building"],
+            'Room': self.info['Room'],
+            'sla_nbr': self.info["sla_nbr"],
+            'line_type': self.info["line_type"]
+        }
+        out: str = f'[{title["Phone Number"]}]: <{title["line_type"]}> '
+        out += f'"{title["Name"]}" in {title["Building"]} {title["Room"]} ({title["sla_nbr"]})'
+        out += '\n' + spacer
+
+        total_print = 0
+        for key, value in {k: v for k, v in self.info.items() if k not in title.keys() and v != ''}.items():
+            if total_print + len(key) + len(value) + 5 > char_width:
+                out += '\n' + spacer
+                total_print = 0
+            add_to_out = f'[{key}]: {value} '
+            total_print += len(add_to_out)
+            out += add_to_out
+        return out
 
     def update(self, new_info: dict) -> None:
         for key in new_info:
