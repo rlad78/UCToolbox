@@ -23,6 +23,9 @@ class Dataset:
         except KeyError as e:
             raise Exception(f'[Dataset] missing data member {e.args[0]}')
 
+    def get_att_numbers(self) -> list[str]:
+        return self.att.list_all_lines()
+
     def get_line_info(self, phone_number: str) -> dict:
         line_info: dict = {
             'Phone Number': phone_number,
