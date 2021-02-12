@@ -9,7 +9,8 @@ from tqdm import tqdm
 def load_dataset() -> Dataset:
     print('Loading dataset...', end="")
     start = default_timer()
-    csv_root = Path('/Users/arf/PycharmProjects/VBAReplacer/data_csv')
+    # csv_root = Path('/Users/arf/PycharmProjects/VBAReplacer/data_csv')
+    csv_root = Path('C:/Users/gooby/PycharmProjects/VBAReplacer/data_csv')
     file_stack: list[tuple[str, str]] = [
         ('ATT', csv_root / 'ATT.csv'),
         ('COA', csv_root / 'COA.csv'),
@@ -25,8 +26,9 @@ def load_dataset() -> Dataset:
     ]
     fileset = csv_file_stack(file_stack)
     dataset = Dataset(fileset)
-    print(f'loaded! ({(default_timer()-start):.5f}s)')
+    print(f'loaded! ({(default_timer() - start):.5f}s)')
     return dataset
+
 
 def generate_db(dataset: Dataset) -> list[dict]:
     att_lines = dataset.get_att_numbers()
@@ -38,6 +40,7 @@ def generate_db(dataset: Dataset) -> list[dict]:
         db.append(line.info)
     return db
 
+
 def search_line_demo(phone_number: str) -> Line:
     dataset = load_dataset()
     me = Line(phone_number)
@@ -46,4 +49,5 @@ def search_line_demo(phone_number: str) -> Line:
 
 
 if __name__ == '__main__':
-    csv_from_dicts('ucdb.csv',generate_db(load_dataset()))
+    # csv_from_dicts('ucdb.csv', generate_db(load_dataset()))
+    print(search_line_demo(input('Phone number: ')))
