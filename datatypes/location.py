@@ -31,8 +31,6 @@ class Location:
     def add_line(self, line: Line) -> None:
         if line is not None:
             self.lines.append(line)
-        # TODO: check to make sure line belongs at this location
-        # (make notes in excel file if conflict??)
 
     def pull_lines(self) -> list[dict]:
         return [{k: v} for n in self.lines for k, v in n.info]
