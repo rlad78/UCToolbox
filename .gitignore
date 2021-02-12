@@ -14,3 +14,4 @@ venv/
 .idea/
 pip-selfcheck.json
 *.csv
+*.pyc
