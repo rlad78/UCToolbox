@@ -39,7 +39,7 @@ class Line:
         return out
 
     def __iter__(self):
-        for k, v in self.info.items()
+        for k, v in self.info.items():
             yield k, v
 
     def update(self, new_info: dict) -> None:
