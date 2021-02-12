@@ -103,10 +103,10 @@ class Dataset:
             'Call Pickup Group': ', '.join(self.cpg.get_cpg_lines(phone_number)),
         }
 
-    def get_location_info(self, building_id='', sla='') -> dict:
-        if not building_id and not sla:
+    def get_location_info(self, building_id='', sla_num='') -> dict:
+        if not building_id and not sla_num:
             return {}
-        this_location: SLAEntry = self.sla.get_building(building_id, sla)
+        this_location: SLAEntry = self.sla.get_building(building_id, sla_num)
         if this_location is None:
             return {}
         else:
@@ -126,3 +126,4 @@ class Dataset:
         else:
             line_info.update(self.get_centrex_cxm(phone_number))
             line_info.update(self.get_centrex_ownership(phone_number))
+        return line_info
