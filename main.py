@@ -2,9 +2,12 @@ from pathlib import Path
 from datatypes import Line
 from info import Dataset
 from IO import *
+from timeit import default_timer
 
 
 def load_dataset() -> Dataset:
+    print('Loading dataset...', end="")
+    start = default_timer()
     csv_root = Path('/Users/arf/PycharmProjects/VBAReplacer/data_csv')
     file_stack: list[tuple[str, str]] = [
         ('ATT', csv_root / 'ATT.csv'),
@@ -20,14 +23,14 @@ def load_dataset() -> Dataset:
         ('LA', csv_root / 'CXM' / 'LA.csv'),
     ]
     fileset = get_file_stack(file_stack)
-    return Dataset(fileset)
+    dataset = Dataset(fileset)
+    print(f'loaded! ({(default_timer()-start):.5f}s)')
+    return dataset
 
 def search_line(phone_number: str) -> Line:
     dataset = load_dataset()
     me = Line(phone_number)
-    me.update(dataset.get_dept_info(phone_number))
-    me.update(dataset.get_line_info(phone_number))
-    me.update(dataset.get_voip_info(phone_number))
+    me.update(dataset.get_line_all(phone_number))
     return me
 
 
