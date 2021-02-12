@@ -3,6 +3,7 @@ from datatypes import Line
 from info import Dataset
 from IO import *
 from timeit import default_timer
+from tqdm import tqdm
 
 
 def load_dataset() -> Dataset:
@@ -22,12 +23,22 @@ def load_dataset() -> Dataset:
         ('CPG', csv_root / 'CXM' / 'CPG.csv'),
         ('LA', csv_root / 'CXM' / 'LA.csv'),
     ]
-    fileset = get_file_stack(file_stack)
+    fileset = csv_file_stack(file_stack)
     dataset = Dataset(fileset)
     print(f'loaded! ({(default_timer()-start):.5f}s)')
     return dataset
 
-def search_line(phone_number: str) -> Line:
+def generate_db(dataset: Dataset) -> list[dict]:
+    att_lines = dataset.get_att_numbers()
+    db: list[dict] = []
+    print('Generating UCDB')
+    for number in tqdm(att_lines):
+        line = Line(number)
+        line.update(dataset.get_line_all(number))
+        db.append(line.info)
+    return db
+
+def search_line_demo(phone_number: str) -> Line:
     dataset = load_dataset()
     me = Line(phone_number)
     me.update(dataset.get_line_all(phone_number))
@@ -35,4 +46,4 @@ def search_line(phone_number: str) -> Line:
 
 
 if __name__ == '__main__':
-    print(search_line('8646569969'))
+    csv_from_dicts('ucdb.csv',generate_db(load_dataset()))
