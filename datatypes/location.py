@@ -38,3 +38,4 @@ class Location(SLAEntry):
                 raise Exception(f'[Location.write_lines()]: {root_folder} is not a directory')
         filename = sanitize_filename(self.data['Building'] + '.xlsx')
         dicts_to_excel(path / filename, self.pull_lines())
+        # TODO: SORT THESE BY FIMAN!!!!!
