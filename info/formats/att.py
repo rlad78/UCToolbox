@@ -51,7 +51,9 @@ class ATT(SourceData):
         return list(set([x[DN] for x in self._data]))
 
     def list_all_loc(self) -> list[tuple[str, str]]:
-        return [(x[SLA_NBR], split_loc(x[LOCATION])[0]) for x in self._data]
+        data = [(x[SLA_NBR], split_loc(x[LOCATION])[0]) for x in self._data]
+        data.sort(key=lambda x: int(x[0]))
+        return data
 
 
 def split_loc(loc: str) -> (str, str):

@@ -52,3 +52,14 @@ class SLA(SourceData):
             return SLAEntry(this_building)
         else:
             return None
+
+    def get_locations(self, loc_pairs: list[tuple[str, str]]) -> list[dict]:
+        loc_flat: dict[str, SLAEntry] = {}
+        for sla_num, bldg_id in loc_pairs:
+            if sla_num not in loc_flat:
+                loc = self.get_building(sla_number=sla_num)
+                if loc is not None:
+                    loc_flat[sla_num] = loc
+            elif bldg_id not in loc_flat[sla_num][BLDG_ID].split(', ') and bldg_id != '':
+                loc_flat[sla_num].data[BLDG_ID] = ', '.join(loc_flat[sla_num][BLDG_ID].split(', ') + [bldg_id])
+        return [d.data for d in loc_flat.values()]

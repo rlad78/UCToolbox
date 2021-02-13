@@ -1,17 +1,17 @@
 from .line import Line
-from info import formats
+from info.formats import SLAEntry
 from IO import dicts_to_excel
 from pathlib import Path
 from pathvalidate import sanitize_filename
 
 
-class Location(formats.SLAEntry):
+class Location(SLAEntry):
     def __init__(self, building_data: dict):
         super(Location, self).__init__(building_data)
         self.lines: list[Line] = []
 
     def __str__(self):
-        out: str = f'{self.building} (SLA {self.sla} | {self.bldg_id})\n'
+        out: str = f'{self.building} (SLA {self.sla})  BLDG IDs: [{self.bldg_id}]\n'
         out += self.address
         return out
 

@@ -1,5 +1,5 @@
 from pathlib import Path
-from datatypes import Line
+from datatypes import Line, Location
 from info import Dataset
 from IO import *
 from timeit import default_timer
@@ -9,8 +9,8 @@ from tqdm import tqdm
 def load_dataset() -> Dataset:
     print('Loading dataset...', end="")
     start = default_timer()
-    # csv_root = Path('/Users/arf/PycharmProjects/VBAReplacer/data_csv')
-    csv_root = Path('C:/Users/gooby/PycharmProjects/VBAReplacer/data_csv')
+    csv_root = Path('/Users/arf/PycharmProjects/VBAReplacer/data_csv')
+    # csv_root = Path('C:/Users/gooby/PycharmProjects/VBAReplacer/data_csv')
     file_stack: list[tuple[str, str]] = [
         ('ATT', csv_root / 'ATT.csv'),
         ('COA', csv_root / 'COA.csv'),
@@ -48,6 +48,14 @@ def search_line_demo(phone_number: str) -> Line:
     return me
 
 
+def preview_buildings(dataset: Dataset) -> None:
+    all_buildings: list[dict] = dataset.get_all_locations()
+    for loc in all_buildings:
+        print('')  # newline
+        print(Location(loc))
+        input('Press [enter]...')
+
 if __name__ == '__main__':
-    csv_from_dicts('ucdb.csv', generate_db(load_dataset()))
+    # csv_from_dicts('ucdb.csv', generate_db(load_dataset()))
     # print(search_line_demo(input('Phone number: ')))
+    preview_buildings(load_dataset())
