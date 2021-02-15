@@ -66,7 +66,7 @@ class Location(Entry):
         if len(fiman_groups) == 1:  # leave if there's no centrex lines
             return None
 
-        folder = path / sanitize_filepath(f"{self.building} [SLA {self.sla}]")
+        folder = path / sanitize_filepath(f"({len(self.lines)}) {self.building} [SLA {self.sla}]")
         folder.mkdir(parents=True, exist_ok=True)
         for fiman, lines in fiman_groups.items():
             centrex_sum: int = len([ln for ln in lines if ln['line_type'] != "VOIP"])
