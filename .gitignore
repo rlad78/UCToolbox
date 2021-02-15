@@ -12,6 +12,10 @@
 pyvenv.cfg
 venv/
 .idea/
+OUTPUT/
 pip-selfcheck.json
-*.csv
 *.pyc
+*.xls
+*.xlsx
+*.csv
+.DS_STORE
