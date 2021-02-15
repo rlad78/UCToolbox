@@ -1,6 +1,7 @@
 from datatypes import Line, Location
 from info import Dataset, Database
 from actions import db, data
+from pathlib import Path
 
 
 def search_line_demo(phone_number: str) -> Line:
@@ -21,8 +22,10 @@ def search_line_demo(phone_number: str) -> Line:
 def write_buildings(dataset=None):
     database: Database = db.get_db(dataset)
     buildings = database.centrex_by_building()
+    output_folder = Path().cwd() / "OUTPUT"
+    output_folder.mkdir(parents=True, exist_ok=True)
     for sla, building in buildings.items():
-        building.write_centrex_lines('/Users/arf/PycharmProjects/UCToolbox/OUTPUT')
+        building.write_centrex_lines(str(output_folder))
         print(f'Printed {len(building.lines)} lines from {building.building}')
         input()
 
