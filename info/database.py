@@ -31,6 +31,24 @@ class Database(SourceData):
                 by_buildings[sla].add_line(Line(entry['Phone Number'], entry))
         return by_buildings
 
+    def centrex_by_building(self) -> dict[str, Location]:
+        buildings: dict[str, Location] = dict()
+        for entry in self._data:
+            if entry['line_type'] == 'VOIP':
+                continue
+            sla = entry['sla_nbr']
+            if sla not in buildings.keys():
+                bldg_info = self.dataset.get_location_info(sla_num=sla)
+                if not bldg_info:
+                    building = Location({'SLA': sla, 'Name': 'SLA ' + sla})
+                else:
+                    building = Location(bldg_info)
+                building.add_line(Line(entry['Phone Number'], entry))
+                buildings[sla] = building
+            else:
+                buildings[sla].add_line(Line(entry['Phone Number'], entry))
+        return buildings
+
     def lines(self) -> list[dict]:
         return self._data
 

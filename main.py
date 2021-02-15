@@ -20,7 +20,7 @@ def search_line_demo(phone_number: str) -> Line:
 
 def write_buildings(dataset=None):
     database: Database = db.get_db(dataset)
-    buildings = database.lines_by_building()
+    buildings = database.centrex_by_building()
     for sla, building in buildings.items():
         building.write_centrex_lines('/Users/arf/PycharmProjects/UCToolbox/OUTPUT')
         print(f'Printed {len(building.lines)} lines from {building.building}')
