@@ -2,7 +2,7 @@ from .line import Line
 from info.formats import SLAEntry
 from IO import dicts_to_excel
 from pathlib import Path
-from pathvalidate import sanitize_filename
+from pathvalidate import sanitize_filename, sanitize_filepath
 
 
 class Location(SLAEntry):
@@ -26,8 +26,13 @@ class Location(SLAEntry):
         if line['sla_nbr'] == self.sla:
             self.lines.append(line)
 
-    def pull_lines(self) -> list[dict]:
-        return [{k: v} for n in self.lines for k, v in n.info]
+    def pull_lines(self, lines=None) -> list[dict]:
+        if lines is None:
+            return [{k: v} for n in self.lines for k, v in n.info]
+        elif type(lines) == list and lines and type(lines[0]) == Line:
+            return [{k: v} for n in lines for k, v in n.info]
+        else:
+            return []
 
     def write_lines(self, root_folder=''):
         if not root_folder:
@@ -36,6 +41,14 @@ class Location(SLAEntry):
             path = Path(root_folder)
             if not path.is_dir():
                 raise Exception(f'[Location.write_lines()]: {root_folder} is not a directory')
-        filename = sanitize_filename(self.data['Building'] + '.xlsx')
-        dicts_to_excel(path / filename, self.pull_lines())
-        # TODO: SORT THESE BY FIMAN!!!!!
+
+        fiman_groups: dict[str, list[Line]] = {}
+        for line in self.lines:
+            if line["Financial Manager"] in fiman_groups.keys():
+                fiman_groups[line["Financial Manager"]].append(line)
+            else:
+                fiman_groups[list["Financial Manager"]] = list(line)
+        for fiman, lines in fiman_groups.items():
+            centrex_sum: int = len([ln for ln in lines if ln['line_type'] != "VOIP"])
+            filename = sanitize_filename(f'({centrex_sum}) {self.building} - {fiman}.xlsx')
+            dicts_to_excel(path / sanitize_filepath(self.building) / filename, self.pull_lines(lines))
