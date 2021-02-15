@@ -1,5 +1,5 @@
 class Line:
-    def __init__(self, directory_number: str):
+    def __init__(self, directory_number: str, info=None):
         self._categories: list[str] = [
             "Phone Number", "User ID", "Name", "Department", "Dept. Code", "Financial Manager", "Building", "Floor",
             "Room", "Business Set?", "Forward All", "Line Appearances", "Busy Lamp Fields", "Call Pickup Group",
@@ -7,9 +7,13 @@ class Line:
             'mysoft_name', 'hr_full_name'
         ]
 
-        self.info: dict = {
-            k: '' for k in self._categories
-        }
+        if info is not None and type(info) == dict:
+            self.info: dict = {}
+            self.info.update(info)
+        else:
+            self.info: dict = {
+                k: '' for k in self._categories
+            }
         self.info['Phone Number'] = directory_number
         self.dn = directory_number
 
