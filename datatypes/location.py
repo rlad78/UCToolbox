@@ -1,13 +1,17 @@
 from .line import Line
-from info.formats import SLAEntry
+from .sourcedata import Entry
 from IO import dicts_to_excel
 from pathlib import Path
 from pathvalidate import sanitize_filename, sanitize_filepath
 
 
-class Location(SLAEntry):
+class Location(Entry):
     def __init__(self, building_data: dict):
         super(Location, self).__init__(building_data)
+        self.building = building_data.get('Name', "")
+        self.address = building_data.get('Address', "")
+        self.sla = building_data.get('SLA', "")
+        self.bldg_id = building_data.get('Building ID', "")
         self.lines: list[Line] = []
 
     def __str__(self):
@@ -28,9 +32,14 @@ class Location(SLAEntry):
 
     def pull_lines(self, lines=None) -> list[dict]:
         if lines is None:
-            return [{k: v} for n in self.lines for k, v in n.info]
+            # return [{k: v} for n in self.lines for k, v in n.info.items()]
+            return []
         elif type(lines) == list and lines and type(lines[0]) == Line:
-            return [{k: v} for n in lines for k, v in n.info]
+            # return [{k: v} for n in lines for k, v in n.info.items()]
+            line_list: list[dict] = []
+            for line in lines:
+                line_list.append(line.info)
+            return line_list
         else:
             return []
 
@@ -42,13 +51,19 @@ class Location(SLAEntry):
             if not path.is_dir():
                 raise Exception(f'[Location.write_lines()]: {root_folder} is not a directory')
 
-        fiman_groups: dict[str, list[Line]] = {}
+        fiman_groups: dict[str, list[Line]] = dict()
+        fiman_groups['UNASSIGNED'] = []
         for line in self.lines:
-            if line["Financial Manager"] in fiman_groups.keys():
-                fiman_groups[line["Financial Manager"]].append(line)
+            fiman = line["Financial Manager"]
+            if not fiman:
+                fiman_groups['UNASSIGNED'].append(line)
+            elif fiman in fiman_groups.keys():
+                fiman_groups[fiman].append(line)
             else:
-                fiman_groups[list["Financial Manager"]] = list(line)
+                fiman_groups[fiman] = [line]
+        folder = path / sanitize_filepath(f"{self.building} [SLA {self.sla}]")
+        folder.mkdir(parents=True, exist_ok=True)
         for fiman, lines in fiman_groups.items():
             centrex_sum: int = len([ln for ln in lines if ln['line_type'] != "VOIP"])
             filename = sanitize_filename(f'({centrex_sum}) {self.building} - {fiman}.xlsx')
-            dicts_to_excel(path / sanitize_filepath(self.building) / filename, self.pull_lines(lines))
+            dicts_to_excel(folder / filename, self.pull_lines(lines))

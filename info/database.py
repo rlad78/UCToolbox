@@ -1,4 +1,4 @@
-from .formats import SourceData
+from datatypes.sourcedata import SourceData
 from .dataset import Dataset
 from pathlib import Path
 from IO import csv_from_dicts
@@ -6,8 +6,9 @@ from datatypes import Location, Line
 
 
 class Database(SourceData):
-    def __init__(self, db: list[dict]):  # TODO: store dataset within Database class
+    def __init__(self, db: list[dict], dataset: Dataset):  # TODO: store dataset within Database class
         super(Database, self).__init__(db)
+        self.dataset = dataset
 
     def query(self, required_matches: dict):
         super(Database, self)._query(required_matches)
@@ -17,11 +18,18 @@ class Database(SourceData):
         dict: sla, Location
         """
         by_buildings: dict[str, Location] = {}
-        for line in self._data:
-            sla = line["sla_nbr"]
+        for entry in self._data:
+            sla = entry["sla_nbr"]
             if sla not in by_buildings.keys():
-
-
+                location_info = self.dataset.get_location_info(sla_num=sla)
+                if not location_info:
+                    this_location = Location({'SLA': sla, 'Name': 'SLA ' + str(sla)})
+                this_location = Location(location_info)
+                this_location.add_line(Line(entry['Phone Number'], entry))
+                by_buildings[sla] = this_location
+            else:
+                by_buildings[sla].add_line(Line(entry['Phone Number'], entry))
+        return by_buildings
 
     def lines(self) -> list[dict]:
         return self._data

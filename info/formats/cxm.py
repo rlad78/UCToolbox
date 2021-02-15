@@ -1,4 +1,4 @@
-from .sourcedata import SourceData
+from datatypes.sourcedata import SourceData
 
 
 # CSV HEADER LABELS

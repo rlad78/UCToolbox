@@ -1,4 +1,4 @@
-from .sourcedata import SourceData, Entry
+from datatypes.sourcedata import SourceData, Entry
 from typing import Union
 
 

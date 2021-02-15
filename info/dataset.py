@@ -109,7 +109,7 @@ class Dataset:
     def get_location_info(self, building_id='', sla_num='') -> dict:
         if not building_id and not sla_num:
             return {}
-        this_location: SLAEntry = self.sla.get_building(building_id, sla_num)
+        this_location: SLAEntry = self.sla.get_building(sla_num, building_id)
         if this_location is None:
             return {}
         else:
