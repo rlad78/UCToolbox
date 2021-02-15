@@ -22,8 +22,9 @@ def write_buildings(dataset=None):
     database: Database = db.get_db(dataset)
     buildings = database.lines_by_building()
     for sla, building in buildings.items():
-        building.write_lines('/Users/arf/PycharmProjects/UCToolbox/OUTPUT')
+        building.write_centrex_lines('/Users/arf/PycharmProjects/UCToolbox/OUTPUT')
         print(f'Printed {len(building.lines)} lines from {building.building}')
+        input()
 
 
 if __name__ == '__main__':

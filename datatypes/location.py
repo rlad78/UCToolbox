@@ -43,7 +43,7 @@ class Location(Entry):
         else:
             return []
 
-    def write_lines(self, root_folder=''):
+    def write_centrex_lines(self, root_folder=''):
         if not root_folder:
             path = Path().cwd()
         else:
@@ -54,6 +54,8 @@ class Location(Entry):
         fiman_groups: dict[str, list[Line]] = dict()
         fiman_groups['UNASSIGNED'] = []
         for line in self.lines:
+            if line['line_type'] == 'VOIP':
+                continue
             fiman = line["Financial Manager"]
             if not fiman:
                 fiman_groups['UNASSIGNED'].append(line)
@@ -61,6 +63,9 @@ class Location(Entry):
                 fiman_groups[fiman].append(line)
             else:
                 fiman_groups[fiman] = [line]
+        if len(fiman_groups) == 1:  # leave if there's no centrex lines
+            return None
+
         folder = path / sanitize_filepath(f"{self.building} [SLA {self.sla}]")
         folder.mkdir(parents=True, exist_ok=True)
         for fiman, lines in fiman_groups.items():
