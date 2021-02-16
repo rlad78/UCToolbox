@@ -39,7 +39,7 @@ def csv_from_list(file_name: str, head: list[str], lines: list[list[str]]):
 
 def get_csv_stack(files: list[tuple[str, str]]) -> dict:
     """
-    :param files: list of (label, file) tuples
+    :param files: list of (label, filepath) tuples
     """
     futures = {}
     return_dicts = {}
