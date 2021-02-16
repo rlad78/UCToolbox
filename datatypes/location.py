@@ -9,7 +9,7 @@ import re
 class Location(Entry):
     def __init__(self, building_data: dict):
         super(Location, self).__init__(building_data)
-        self.building = building_data.get('Name', "")
+        self.building = building_data.get('Name', "").replace(" / ", " ").replace("/", "")
         self.address = building_data.get('Address', "")
         self.sla = building_data.get('SLA', "")
         self.bldg_id = building_data.get('Building ID', "")
@@ -87,5 +87,6 @@ class Location(Entry):
                 centrex_sum: int = len([ln for ln in lines if ln['line_type'] != "VOIP"])
                 filename = sanitize_filename(f'({centrex_sum}) {self.building} - {fiman}.xlsx')
                 dicts_to_excel(folder / filename, self.pull_lines(lines))
-            # write out a big sheet for all of them
-            dicts_to_excel(folder / sanitize_filename(f'({len(self.lines)}) {self.building} [ALL]'), self.pull_lines())
+            # write out a big sheet for all of them (if there's more than 1 sheet)
+            if len(fiman_groups) > 1:
+                dicts_to_excel(folder / sanitize_filename(f'({len(self.lines)}) {self.building} [ALL]'), self.pull_lines())
