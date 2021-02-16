@@ -1,7 +1,7 @@
 from info import Dataset
 from timeit import default_timer
 from pathlib import Path
-from fileops import csv_file_stack
+from fileops import get_csv_stack
 
 
 def load_dataset() -> Dataset:
@@ -22,7 +22,7 @@ def load_dataset() -> Dataset:
         ('CPG', csv_root / 'CXM' / 'CPG.csv'),
         ('LA', csv_root / 'CXM' / 'LA.csv'),
     ]
-    fileset = csv_file_stack(file_stack)
+    fileset = get_csv_stack(file_stack)
     dataset = Dataset(fileset)
     print(f'loaded! ({(default_timer() - start):.5f}s)')
     return dataset

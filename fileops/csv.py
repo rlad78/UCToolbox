@@ -37,7 +37,7 @@ def csv_from_list(file_name: str, head: list[str], lines: list[list[str]]):
 #     return re.sub(r'(?u)[^-\w.]', '', s)
 
 
-def csv_file_stack(files: list[tuple[str, str]]) -> dict:
+def get_csv_stack(files: list[tuple[str, str]]) -> dict:
     """
     :param files: list of (label, file) tuples
     """
