@@ -157,6 +157,12 @@ class SourceData:
             for category in categories:
                 entry[category] = format_dn(entry[category])
 
+    def _fix_dept_numbers(self, *categories) -> None:
+        for entry in self._data:
+            for category in categories:
+                if len(entry[category]) == 3:
+                    entry[category] = '0' + entry[category]
+
 
 class Entry:
     def __init__(self, data: dict):

@@ -26,10 +26,12 @@ class HREntry(Entry):
 class HR(SourceData):
     def __init__(self, hr_data: list[dict]):
         super(HR, self).__init__(hr_data)
+        self._fix_dept_numbers(DEPT)
         if not self._data[0][USERID].islower():
             self.__userid_lowercase()
         if not self._data[0][DN].isnumeric():
             self._format_phone_numbers(DN)
+
 
     def __userid_lowercase(self):
         for entry in self._data:
@@ -164,3 +166,10 @@ def __first_last_name(name: str) -> str:
         return name_parts[0] + " " + name_parts[-1]
     else:
         return ordered_name
+
+
+def full_4_dept(dept: str) -> str:
+    if len(dept) == 3:
+        return '0' + dept
+    else:
+        return dept
