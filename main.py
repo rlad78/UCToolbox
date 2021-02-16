@@ -4,6 +4,16 @@ from actions import db, data
 from pathlib import Path
 
 
+def rm_dir(pth):
+    pth = Path(pth)
+    for child in pth.glob('*'):
+        if child.is_file():
+            child.unlink()
+        else:
+            rm_dir(child)
+    pth.rmdir()
+
+
 def search_line_demo(phone_number: str) -> Line:
     dataset = data.load_dataset()
     me = Line(phone_number)
@@ -23,11 +33,15 @@ def write_buildings(dataset=None):
     database: Database = db.get_db(dataset)
     buildings = database.centrex_by_building()
     output_folder = Path().cwd() / "OUTPUT"
+    # make it empty
+    if output_folder.is_dir():
+        rm_dir(str(output_folder))
+
     output_folder.mkdir(parents=True, exist_ok=True)
     for sla, building in buildings.items():
         building.write_centrex_lines(str(output_folder))
         print(f'Printed {len(building.lines)} lines from {building.building}')
-        input()
+        # input()
 
 
 if __name__ == '__main__':
