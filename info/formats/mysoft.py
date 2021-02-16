@@ -29,7 +29,7 @@ class MYSOFT(SourceData):
     def get_line(self, phone_number: str) -> Union[MYSOFTEntry, None]:
         this_line = self._get(DN, phone_number)
         if this_line:
-            return MYSOFTEntry(this_line)
+            return MYSOFTEntry(replace_null(this_line))
         else:
             return None
 
@@ -41,3 +41,9 @@ def dept_from_gl(gl: str) -> str:
             return part
     else:
         return ''
+
+def replace_null(entry: dict) -> dict:
+    new_dict: dict = {}
+    for k, v in entry.items():
+        new_dict[k] = v if v != "NULL" else ""
+    return new_dict
