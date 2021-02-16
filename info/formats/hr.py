@@ -28,6 +28,8 @@ class HR(SourceData):
         super(HR, self).__init__(hr_data)
         if not self._data[0][USERID].islower():
             self.__userid_lowercase()
+        if not self._data[0][DN].isnumeric():
+            self._format_phone_numbers(DN)
 
     def __userid_lowercase(self):
         for entry in self._data:
