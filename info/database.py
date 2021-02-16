@@ -1,7 +1,7 @@
 from datatypes.sourcedata import SourceData
 from .dataset import Dataset
 from pathlib import Path
-from IO import csv_from_dicts
+from fileops import csv_from_dicts
 from datatypes import Location, Line
 
 

@@ -1,6 +1,6 @@
 from .line import Line
 from .sourcedata import Entry
-from IO import dicts_to_excel
+from fileops import dicts_to_excel
 from pathlib import Path
 from pathvalidate import sanitize_filename, sanitize_filepath
 

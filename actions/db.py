@@ -1,6 +1,6 @@
 from datatypes import Line
 from info import Dataset, Database
-from IO import csv_to_dicts
+from fileops import csv_to_dicts
 from pathlib import Path
 from tqdm import tqdm
 from .data import load_dataset

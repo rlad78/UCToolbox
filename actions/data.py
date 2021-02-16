@@ -1,7 +1,7 @@
 from info import Dataset
 from timeit import default_timer
 from pathlib import Path
-from IO import csv_file_stack
+from fileops import csv_file_stack
 
 
 def load_dataset() -> Dataset:
