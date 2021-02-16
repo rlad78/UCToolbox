@@ -22,7 +22,6 @@ class HREntry(Entry):
         self.fullname = clean_full(self.name)
 
 
-# TODO: Implement fuzzy name matching method in HR
 class HR(SourceData):
     def __init__(self, hr_data: list[dict]):
         super(HR, self).__init__(hr_data)
