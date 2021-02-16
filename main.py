@@ -1,6 +1,7 @@
 from datatypes import Line, Location
 from info import Dataset, Database
 from actions import db, data
+from fileops import csv_from_dicts
 from pathlib import Path
 
 
@@ -37,12 +38,21 @@ def write_buildings(dataset=None):
     if output_folder.is_dir():
         rm_dir(str(output_folder))
 
+    results: dict[str, dict] = {
+        "Emergency Phones": {"Building": "Emergency Phones", "Line Count": 0, "Elevator(s)?": ""}
+    }
     output_folder.mkdir(parents=True, exist_ok=True)
     for sla, building in buildings.items():
         building.write_centrex_lines(str(output_folder))
         print(f'Printed {len(building.lines)} lines from {building.building}')
-        # input()
 
+        info = building.summary()
+        if info["EMPH"]:
+            results['Emergency Phones']['Line Count'] += info['Line Count']
+        else:
+            results[building.building] = {k: v for k, v in info.items() if k != "EMPH"}
+    summary_file = output_folder / "SUMMARY.csv"
+    csv_from_dicts(str(summary_file), [d for d in results.values()])
 
 if __name__ == '__main__':
     # csv_from_dicts('ucdb.csv', generate_db(load_dataset()))

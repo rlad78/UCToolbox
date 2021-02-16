@@ -80,6 +80,7 @@ class Location(Entry):
             if not folder.is_dir():
                 folder.mkdir(parents=True, exist_ok=True)
             dicts_to_excel(folder / sanitize_filename(f'({len(self.lines)}) {self.building}'), self.pull_lines())
+            return {"EMPH": self.pull_lines()}
         else:
             folder = path / sanitize_filepath(f"({len(self.lines)}) {self.building} [SLA {self.sla}]")
             folder.mkdir(parents=True, exist_ok=True)
@@ -90,3 +91,25 @@ class Location(Entry):
             # write out a big sheet for all of them (if there's more than 1 sheet)
             if len(fiman_groups) > 1:
                 dicts_to_excel(folder / sanitize_filename(f'({len(self.lines)}) {self.building} [ALL]'), self.pull_lines())
+
+        return fiman_groups
+
+    def summary(self) -> dict:
+        info: dict = {
+            "Building": self.building,
+            "Line Count": len(self.lines),
+            "Elevator(s)?": "",
+            "EMPH": False
+        }
+        if re.search(r'(EM\s*PH|EP\s|EP\w{3,4}|EMER.*PHONE)', self.building):
+            info['EMPH'] = True
+
+        elev_check: bool = False
+        s_elv = re.compile(r'(elev|elv)', re.IGNORECASE)
+        for line in self.lines:
+            if re.search(s_elv, line['Name']) or re.search(s_elv, line['Room']):
+                elev_check = True
+        if elev_check:
+            info['Elevator(s)?'] = "YES"
+
+        return info
