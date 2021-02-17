@@ -3,6 +3,7 @@ from info import Dataset, Database
 from actions import db, data
 from fileops import csv_from_dicts, dicts_to_excel
 from pathlib import Path
+from pathvalidate import sanitize_filename, sanitize_filepath
 import re
 
 
@@ -48,9 +49,15 @@ def write_buildings(dataset=None):
     results: dict[str, dict] = {
         "Emergency Phones": {"Building": "Emergency Phones", "Line Count": 0, "Elevator(s)?": ""}
     }
-    output_folder.mkdir(parents=True, exist_ok=True)
+
     for sla, building in buildings.items():
-        building.write_centrex_lines(str(output_folder))
+        fiman_lines: dict[str, list[dict]] = building.pull_lines_by_fiman()
+        total_lines: int = sum([len(n) for n in fiman_lines.values()])
+        building_folder = output_folder / sanitize_filename(f'({total_lines}) {building.building} [SLA {sla}]')
+        # TODO: finish saving the file
+        for fiman, lines in fiman_lines.items():
+            dicts_to_excel(output_folder / sanitize_filename(f'({len(lines)}) {fiman}'))
+
         print(f'Printed {len(building.lines)} lines from {building.building}')
 
         info = building.summary()
