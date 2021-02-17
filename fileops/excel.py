@@ -3,7 +3,7 @@ from openpyxl import styles
 from openpyxl.utils import get_column_letter
 
 
-def dicts_to_excel(filename: str, data: list[dict], sheet_name='Sheet1') -> None:
+def dicts_to_excel(filename, data: list[dict], sheet_name='Sheet1') -> None:
     if str(filename)[-5:] != '.xlsx':
         filepath = str(filename) + '.xlsx'
     else:
