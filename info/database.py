@@ -3,6 +3,7 @@ from .dataset import Dataset
 from pathlib import Path
 from fileops import csv_from_dicts
 from datatypes import Location, Line
+import re
 
 
 class Database(SourceData):
@@ -10,8 +11,14 @@ class Database(SourceData):
         super(Database, self).__init__(db)
         self.dataset = dataset
 
-    def query(self, required_matches: dict):
-        super(Database, self)._query(required_matches)
+    def query(self, required_matches: dict) -> list[dict]:
+        return super(Database, self)._query(required_matches)
+
+    def parse(self, category: str, regex: str, flags: re.RegexFlag) -> dict:
+        return super(Database, self)._parse(category, regex, flags)
+
+    def parseall(self, category: str, regex: str, flags: re.RegexFlag) -> list[dict]:
+        return super(Database, self)._parseall(category, regex, flags)
 
     def lines_by_building(self) -> dict[str, Location]:
         """

@@ -103,7 +103,7 @@ class SourceData:
                 matching_entries.append(entry)  # add entry to the matching list if all of the values matched
         return matching_entries
 
-    def _parse(self, category: str, regex: str) -> dict:
+    def _parse(self, category: str, regex: str, flags: re.RegexFlag) -> dict:
         """
         Same functionality as self.get(), but uses regex matching instead of str matching.
 
@@ -111,17 +111,18 @@ class SourceData:
                          category is not within the csv header.
         :param regex: Any regular expression except for ''. self.parse() will automatically return empty
                       dict {} if blank regex is provided.
+        :param flags: (optional) Any re.RegexFlag type object (separate out multiple flags using '|')
         :return: The dict (entry) satisfying the regex constraint. Returns an empty dict {} if no
                  matching entry is found.
         """
         searcher = re.compile(regex, re.IGNORECASE)
         for entry in self._data:
-            if re.search(searcher, entry[category]):
+            if re.search(searcher, entry[category], flags):
                 return entry
         else:
             return {}
 
-    def _parseall(self, category: str, regex: str) -> list[dict]:
+    def _parseall(self, category: str, regex: str, flags: re.RegexFlag) -> list[dict]:
         """
         Same functionality as self.getall(), but uses regex matching instead of str matching.
 
@@ -129,13 +130,14 @@ class SourceData:
                          category is not within the csv header.
         :param regex: Any regular expression except for ''. self.parse() will automatically return empty
                       dict {} if blank regex is provided.
+        :param flags: (optional) Any re.RegexFlag type object (separate out multiple flags using '|')
         :return: List of entries satisfying the regex constraint. Returns an empty list [] if no
                  matching entry is found.
         """
         searcher = re.compile(regex, re.IGNORECASE)
         matching_entries: list[dict] = []
         for entry in self._data:
-            if re.search(searcher, entry[category]):
+            if re.search(searcher, entry[category], flags):
                 matching_entries.append(entry)
         return matching_entries
 
