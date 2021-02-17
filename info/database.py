@@ -14,10 +14,10 @@ class Database(SourceData):
     def query(self, required_matches: dict) -> list[dict]:
         return super(Database, self)._query(required_matches)
 
-    def parse(self, category: str, regex: str, flags: re.RegexFlag) -> dict:
+    def parse(self, category: str, regex: str, flags: int) -> dict:
         return super(Database, self)._parse(category, regex, flags)
 
-    def parseall(self, category: str, regex: str, flags: re.RegexFlag) -> list[dict]:
+    def parseall(self, category: str, regex: str, flags: int) -> list[dict]:
         return super(Database, self)._parseall(category, regex, flags)
 
     def lines_by_building(self) -> dict[str, Location]:

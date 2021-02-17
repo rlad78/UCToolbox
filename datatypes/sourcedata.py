@@ -103,7 +103,7 @@ class SourceData:
                 matching_entries.append(entry)  # add entry to the matching list if all of the values matched
         return matching_entries
 
-    def _parse(self, category: str, regex: str, flags: re.RegexFlag) -> dict:
+    def _parse(self, category: str, regex: str, flags: int) -> dict:
         """
         Same functionality as self.get(), but uses regex matching instead of str matching.
 
@@ -122,7 +122,7 @@ class SourceData:
         else:
             return {}
 
-    def _parseall(self, category: str, regex: str, flags: re.RegexFlag) -> list[dict]:
+    def _parseall(self, category: str, regex: str, flags: int) -> list[dict]:
         """
         Same functionality as self.getall(), but uses regex matching instead of str matching.
 
