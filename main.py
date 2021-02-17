@@ -1,8 +1,9 @@
 from datatypes import Line, Location
 from info import Dataset, Database
 from actions import db, data
-from fileops import csv_from_dicts
+from fileops import csv_from_dicts, dicts_to_excel
 from pathlib import Path
+import re
 
 
 def rm_dir(pth):
@@ -30,13 +31,19 @@ def search_line_demo(phone_number: str) -> Line:
 #         input('Press [enter]...')
 
 
-def write_buildings(dataset=None):
-    database: Database = db.get_db(dataset)
-    buildings = database.centrex_by_building()
+def get_output_folder() -> Path:
     output_folder = Path().cwd() / "OUTPUT"
     # make it empty
     if output_folder.is_dir():
         rm_dir(str(output_folder))
+        output_folder.mkdir(parents=True, exist_ok=True)
+    return output_folder
+
+
+def write_buildings(dataset=None):
+    database: Database = db.get_db(dataset)
+    buildings = database.centrex_by_building()
+    output_folder = get_output_folder()
 
     results: dict[str, dict] = {
         "Emergency Phones": {"Building": "Emergency Phones", "Line Count": 0, "Elevator(s)?": ""}
