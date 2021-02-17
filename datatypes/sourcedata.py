@@ -115,9 +115,9 @@ class SourceData:
         :return: The dict (entry) satisfying the regex constraint. Returns an empty dict {} if no
                  matching entry is found.
         """
-        searcher = re.compile(regex, re.IGNORECASE)
+        searcher = re.compile(regex, flags)
         for entry in self._data:
-            if re.search(searcher, entry[category], flags):
+            if re.search(searcher, entry[category]):
                 return entry
         else:
             return {}
@@ -134,10 +134,10 @@ class SourceData:
         :return: List of entries satisfying the regex constraint. Returns an empty list [] if no
                  matching entry is found.
         """
-        searcher = re.compile(regex, re.IGNORECASE)
+        searcher = re.compile(regex, flags)
         matching_entries: list[dict] = []
         for entry in self._data:
-            if re.search(searcher, entry[category], flags):
+            if re.search(searcher, entry[category]):
                 matching_entries.append(entry)
         return matching_entries
 
