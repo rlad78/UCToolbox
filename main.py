@@ -54,10 +54,11 @@ def write_buildings(dataset=None):
         fiman_lines: dict[str, list[dict]] = building.pull_lines_by_fiman()
         total_lines: int = sum([len(n) for n in fiman_lines.values()])
         building_folder = output_folder / sanitize_filename(f'({total_lines}) {building.building} [SLA {sla}]')
-        # TODO: finish saving the file
         for fiman, lines in fiman_lines.items():
-            dicts_to_excel(output_folder / sanitize_filename(f'({len(lines)}) {fiman}'))
+            dicts_to_excel(building_folder / sanitize_filename(f'({len(lines)}) {building.building} - {fiman}.xlsx'))
 
+        # print out an ALL sheet
+        dicts_to_excel(building_folder / sanitize_filename(f'({len(building.lines)}) {building.building} - ALL.xlsx'))
         print(f'Printed {len(building.lines)} lines from {building.building}')
 
         info = building.summary()
@@ -67,23 +68,6 @@ def write_buildings(dataset=None):
             results[building.building] = {k: v for k, v in info.items() if k != "EMPH"}
     summary_file = output_folder / "SUMMARY.csv"
     csv_from_dicts(str(summary_file), [d for d in results.values()])
-
-def write_fire(dataset=None):
-    database: Database = db.get_db(dataset)
-    fire_temp: list[dict] = database.parseall("Name", r'(fire|facp)', re.I)
-    fire_temp += (database.parseall("Name", r'(fire|facp)', re.I))
-
-    #remove duplicates and voip lines
-    fire_lines: list[dict] = []
-    fire_dns: list[str] = []
-    for line in fire_temp:
-        if line['Phone Number'] not in fire_dns and line['line_type'] != 'VOIP':
-            fire_lines.append(line)
-            fire_dns.append(line['Phone Number'])
-
-    p = get_output_folder()
-    dicts_to_excel(p / "FIRE ALARMS.xlsx", fire_lines, sheet_name="FIRE")
-
 
 if __name__ == '__main__':
     write_fire(data.load_dataset())
