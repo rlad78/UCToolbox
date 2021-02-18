@@ -54,6 +54,7 @@ def write_buildings(dataset=None):
         fiman_lines: dict[str, list[dict]] = building.pull_lines_by_fiman()
         total_lines: int = sum([len(n) for n in fiman_lines.values()])
         building_folder = output_folder / sanitize_filename(f'({total_lines}) {building.building} [SLA {sla}]')
+        building_folder.mkdir(parents=True, exist_ok=True)
         for fiman, lines in fiman_lines.items():
             dicts_to_excel(building_folder / sanitize_filename(f'({len(lines)}) {building.building} - {fiman}.xlsx'), lines)
 
@@ -88,4 +89,4 @@ def write_fire(dataset=None):
 
 
 if __name__ == '__main__':
-    write_fire(data.load_dataset())
+    write_buildings(data.load_dataset())
