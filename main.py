@@ -17,8 +17,8 @@ def rm_dir(pth):
     pth.rmdir()
 
 
-def search_line_demo(phone_number: str) -> Line:
-    dataset = data.load_dataset()
+def search_line_demo(phone_number: str, dataset) -> Line:
+    # dataset = data.load_dataset()
     me = Line(phone_number)
     me.update(dataset.get_line_all(phone_number))
     return me
@@ -89,4 +89,6 @@ def write_fire(dataset=None):
 
 
 if __name__ == '__main__':
-    write_buildings(data.load_dataset())
+    dataset = data.load_dataset()
+    while True:
+        print(search_line_demo(input("\nEnter number: "), dataset))
