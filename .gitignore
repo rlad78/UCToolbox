@@ -19,3 +19,6 @@ pip-selfcheck.json
 *.xlsx
 *.csv
 .DS_STORE
+*.numbers
+logs/
+.vscode/
