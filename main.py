@@ -1,5 +1,6 @@
-from actions import data, write
+from actions import data, db, write
 from datatypes import Line
+import pandas as pd
 
 
 def search_line_demo(phone_number: str) -> Line:
@@ -10,4 +11,5 @@ def search_line_demo(phone_number: str) -> Line:
 
 
 if __name__ == '__main__':
-    write.write_buildings(data.load_dataset())
+    ucdb = db.get_db()
+    print(pd.DataFrame(ucdb.elevator_lines()).to_string)
