@@ -1,5 +1,5 @@
 from datatypes.sourcedata import SourceData, Entry
-from typing import Union
+from typing import Tuple, Union
 import re
 
 # CSV HEADER LABELS
@@ -56,7 +56,7 @@ class ATT(SourceData):
         return data
 
 
-def split_loc(loc: str) -> (str, str):
+def split_loc(loc: str) -> Tuple[str, str]:
     rm = ''
     bldg = ''
 
