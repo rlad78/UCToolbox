@@ -79,6 +79,9 @@ class Database(SourceData):
         elev_name: list[dict] = self.parseall('Name', r'(elev|elv)', re.I)
         elev_room: list[dict] = self.parseall('Room', r'(ele|elv)', re.I)
         return remove_dict_dups(elev_name, elev_room)
+    
+    def emergency_phones(self) -> list[dict]:
+        return self.parseall("Building", r'(EM\s*PH|EP\s|EP\w{3,4}|EMER.*PHONE)', re.I)
 
     # TODO: build out more searching functionality
 
