@@ -70,4 +70,24 @@ class Database(SourceData):
         elif p.is_dir():
             csv_from_dicts(p / "ucdb.csv", self._data)
 
+    def fire_lines(self) -> list[dict]:
+        fire_name: list[dict] = self.parseall('Name', r'(fire|facp)', re.I)
+        fire_room: list[dict] = self.parseall('Room', r'(fire|alarm|alrm', re.I)
+        return remove_dict_dups(fire_name, fire_room)
+        
+    def elevator_lines(self) -> list[dict]:
+        elev_name: list[dict] = self.parseall('Name', r'(elev|elv)', re.I)
+        elev_room: list[dict] = self.parseall('Room', r'(ele|elv)', re.I)
+        return remove_dict_dups(elev_name, elev_room)
+
     # TODO: build out more searching functionality
+
+def remove_dict_dups(*args) -> list[dict]:
+    base_list: list[dict] = [d for lst in args for d in lst]
+    base_lines: list[dict] = []
+    base_numbers: list[str] = []
+    for line in base_list:
+        if line['Phone Number'] not in base_numbers:
+            base_lines.append(line)
+            base_numbers.append(line['Phone Number'])
+    return base_lines
