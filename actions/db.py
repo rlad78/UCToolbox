@@ -30,7 +30,7 @@ def read_db(filepath: str, dataset: Dataset) -> Database:
 def get_db(dataset=None):
     # check if ucdb.csv exists
     p = Path().cwd() / "ucdb.csv"
-    if p.is_file() and dataset is not None:
+    if p.is_file() and dataset is None:
         database = read_db(str(p), dataset)
     elif dataset is not None:
         database = generate_db(dataset)
