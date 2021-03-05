@@ -132,7 +132,18 @@ class ResultData(SourceData):
     
     def parse(self, category: str, regex: str, flags=0):
         return ResultData(super()._parseall(category, regex, flags), f'{self.name} - Parse')
-            
+
+    def group_by(self, group_type: str) -> dict:
+        if group_type not in self._categories:
+            return {}
+        
+        groups: dict[str, list[dict]] = {}
+        for entry in self._data:
+            if entry[group_type] in groups:
+                groups[entry[group_type]].append(entry)
+            else:
+                groups[entry[group_type]] = [entry]
+        return {k:ResultData(ent, f'{group_type}: {k}') for k, ent in groups.items()}
 
 def get_path(name: str, extension: str, dirpath='') -> Union[None, Path]:
     if extension[0] != '.':
