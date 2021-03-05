@@ -51,13 +51,13 @@ class ResultData(SourceData):
         if p is not None:
             csv_from_dicts(str(p), self._data)
             
-    def to_excel(self, name: str, dirpath='') -> None:
+    def to_excel(self, name: str, dirpath='', show_all_values=True) -> None:
         if not name:
             name = self.name
         p = get_path(name, '.xlsx', dirpath)
         
         if p is not None:
-            dicts_to_excel(str(p), self._data, show_extra_cols=True)
+            dicts_to_excel(str(p), self._data, show_extra_cols=show_all_values)
             
     def dataframe(self, columns=[]) -> DataFrame:
         try:
