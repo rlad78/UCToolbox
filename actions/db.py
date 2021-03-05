@@ -15,7 +15,7 @@ def generate_db(dataset: Dataset) -> Database:
         line.update(dataset.get_line_all(number))
         db_info.append(line.info)
     db = Database(db_info, dataset)
-    db.save_to()
+    db.save_db()
     return db
 
 

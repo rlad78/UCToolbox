@@ -33,6 +33,9 @@ class ResultData:
                 return d
         else:
             raise KeyError(f'{key=} does not exist in ResultData({self.name})')
+        
+    def __len__(self):
+        return len(self.data)
     
     def to_csv(self, filepath='', dirpath='') -> None:
         p = get_path(self.name, filepath, dirpath)
@@ -56,7 +59,7 @@ class ResultData:
                 requested_columns = [x for x in self.data[0].keys()]
         except KeyError:
             return DataFrame()  # if there's no data, return empty DF
-        return DataFrame(self.data, columns=columns)
+        return DataFrame(self.data, columns=requested_columns)
     
     def __get_by_match(self, regex: str, cateogry: str) -> list[dict]:
         wanted_data: list[dict] = []
@@ -104,6 +107,10 @@ class ResultData:
             (r'(ele|elv)', 'Room')
         ]
         return self.__get_by_multiple(searches)
+    
+    def get_group(self, group: str):
+        if group in self.__group_func:
+            return ResultData(self.__group_func[group](), f'{self.name} - {group}')
             
 
 def get_path(name, filepath='', dirpath='') -> Union[None, Path]:

@@ -1,6 +1,7 @@
 from actions import data, db, write
-from datatypes import Line
+from datatypes import Line, ResultData
 import pandas as pd
+import re
 
 
 def search_line_demo(phone_number: str) -> Line:
@@ -18,4 +19,8 @@ def print_columns(data: list[dict], *args) -> None:
 
 if __name__ == '__main__':
     ucdb = db.get_db()
-    print_columns(ucdb.elevator_lines(), 'Phone Number', 'Name', 'Room')
+    upper_lines = ucdb.parseall("Phone Number", r'^86465604\d\d', re.I)
+    centrex_lines = upper_lines.get_group('Centrex')
+    voip_lines = upper_lines.get_group('VoIP')
+    print(f'VoIP: {len(voip_lines)}, Centrex: {len(centrex_lines)}')
+    
