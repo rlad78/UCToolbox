@@ -72,7 +72,7 @@ class Database(SourceData):
 
     def fire_lines(self) -> list[dict]:
         fire_name: list[dict] = self.parseall('Name', r'(fire|facp)', re.I)
-        fire_room: list[dict] = self.parseall('Room', r'(fire|alarm|alrm', re.I)
+        fire_room: list[dict] = self.parseall('Room', r'(fire|alarm|alrm)', re.I)
         return remove_dict_dups(fire_name, fire_room)
         
     def elevator_lines(self) -> list[dict]:
