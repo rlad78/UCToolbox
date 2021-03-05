@@ -57,7 +57,7 @@ class ResultData(SourceData):
         p = get_path(name, '.xlsx', dirpath)
         
         if p is not None:
-            dicts_to_excel(str(p), self._data)
+            dicts_to_excel(str(p), self._data, show_extra_cols=True)
             
     def dataframe(self, columns=[]) -> DataFrame:
         try:

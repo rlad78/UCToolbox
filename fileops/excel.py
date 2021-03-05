@@ -3,7 +3,7 @@ from openpyxl import styles
 from openpyxl.utils import get_column_letter
 
 
-def dicts_to_excel(filename, data: list[dict], sheet_name='Sheet1') -> None:
+def dicts_to_excel(filename, data: list[dict], sheet_name='Sheet1', show_extra_cols=False) -> None:
     if str(filename)[-5:] != '.xlsx':
         filepath = str(filename) + '.xlsx'
     else:
@@ -24,10 +24,11 @@ def dicts_to_excel(filename, data: list[dict], sheet_name='Sheet1') -> None:
             worksheet.column_dimensions[get_column_letter(i+1)].width = col_width + 1
 
     # hide unneeded cols
-    cols_to_hide = 7
-    total_cols = len(data[0].keys()) + 1
-    for n in range((total_cols - cols_to_hide) + 1, total_cols + 1):
-        worksheet.column_dimensions[get_column_letter(n)].hidden = True
+    if not show_extra_cols:
+        cols_to_hide = 7
+        total_cols = len(data[0].keys()) + 1
+        for n in range((total_cols - cols_to_hide) + 1, total_cols + 1):
+            worksheet.column_dimensions[get_column_letter(n)].hidden = True
 
     writer.save()
 
