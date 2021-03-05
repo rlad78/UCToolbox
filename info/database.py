@@ -1,4 +1,4 @@
-from datatypes.sourcedata import SourceData
+from datatypes import SourceData
 from .dataset import Dataset
 from pathlib import Path
 from fileops import csv_from_dicts
