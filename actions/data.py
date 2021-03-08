@@ -21,6 +21,7 @@ def load_dataset() -> Dataset:
         ('CFD', csv_root / 'CXM' / 'CFD.csv'),
         ('CPG', csv_root / 'CXM' / 'CPG.csv'),
         ('LA', csv_root / 'CXM' / 'LA.csv'),
+        ('FIBER', csv_root / 'fiber.csv')
     ]
     fileset = get_csv_stack(file_stack)
     dataset = Dataset(fileset)

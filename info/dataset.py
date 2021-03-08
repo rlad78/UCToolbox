@@ -20,6 +20,7 @@ class Dataset:
             self.cfd = CFD(data_members['CFD'])
             self.cpg = CPG(data_members['CPG'])
             self.la = LA(data_members['LA'])
+            self.fiber = FIBER(data_members['FIBER'])
         except KeyError as e:
             raise Exception(f'[Dataset] missing data member {e.args[0]}')
 
