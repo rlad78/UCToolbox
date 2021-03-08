@@ -4,7 +4,7 @@ class Line:
             "Phone Number", "User ID", "Name", "Department", "Dept. Code", "Financial Manager", "Building", "Floor",
             "Room", "Has a headset?", "Business Set?", "Forward All", "Line Appearances", "Busy Lamp Fields", "Call Pickup Group",
             "Customer Notes", "UC Notes", "GL String", "Device Model", "Phone Name", "line_type", "bldg_id", "sla_nbr",
-            'mysoft_name', 'hr_full_name'
+            'mysoft_name', 'hr_full_name', 'emg_type'
         ]
 
         if info is not None and type(info) == dict:
