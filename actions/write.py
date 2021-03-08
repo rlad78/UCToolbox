@@ -24,7 +24,7 @@ def write_buildings(dataset=None):
             dicts_to_excel(building_folder / sanitize_filename(f'({len(lines)}) {building.building} - {fiman}.xlsx'), lines)
 
         # print out an ALL sheet
-        dicts_to_excel(building_folder / sanitize_filename(f'({len(building.lines)}) {building.building} - ALL.xlsx'), building.pull_lines())
+        dicts_to_excel(building_folder / sanitize_filename(f'({len(building.lines)}) {building.building} - ALL.xlsx'), building.lines_dict())
         print(f'Printed {len(building.lines)} lines from {building.building}')
 
         info = building.summary()
