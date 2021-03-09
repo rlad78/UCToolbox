@@ -19,6 +19,7 @@ class ResultData(SourceData):
             "Elevator": self.__get_elevator,
             "Fire": self.__get_fire,
             "Emergency": self.__get_emg,
+            "Fiber": self.__get_fiber,
         }
         if self._data and self.exclusions:
             for remove in self.exclusions:
@@ -123,6 +124,9 @@ class ResultData(SourceData):
     
     def __get_emg(self) -> list[dict]:
         return self._getall("emg_type", "emergency")
+    
+    def __get_fiber(self) -> list[dict]:
+        return self.__getall("emg_type", "fiber")
     
     def get_group(self, group: str):
         if group in self.__group_func:

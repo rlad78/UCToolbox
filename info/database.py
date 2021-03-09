@@ -87,9 +87,11 @@ class Database(ResultData):
     def emergency_phones(self) -> ResultData:
         # return ResultData(self.parseall("Building", r'(EM\s*PH|EP\s|EP\w{3,4}|EMER.*PHONE)', re.I), "Emergency Phone Lines")
         return super().get_group("Emergency")
+    
+    def facp_on_fiber(self) -> ResultData:
+        return super().get_group("Fiber")
 
-    # TODO: build out more searching functionality
-
+    
 def remove_dict_dups(*args) -> list[dict]:
     base_list: list[dict] = [d for lst in args for d in lst]
     base_lines: list[dict] = []
