@@ -106,18 +106,20 @@ class ResultData(SourceData):
         return self.__get_by_match(r'centrex', 'line_type')
     
     def __get_fire(self) -> list[dict]:
-        searches = [
-            (r'(fire|facp)', 'Name'),
-            (r'(fire|alarm|alrm)', 'Room')
-        ]
-        return self.__get_by_multiple(searches)
+        # searches = [
+        #     (r'(fire|facp)', 'Name'),
+        #     (r'(fire|alarm|alrm)', 'Room')
+        # ]
+        # return self.__get_by_multiple(searches)
+        return self._getall("emg_type", "fire")
     
     def __get_elevator(self) -> list[dict]:
-        searches = [
-            (r'(elev|elv)', 'Name'),
-            (r'(ele|elv)', 'Room')
-        ]
-        return self.__get_by_multiple(searches)
+        # searches = [
+        #     (r'(elev|elv)', 'Name'),
+        #     (r'(ele|elv)', 'Room')
+        # ]
+        # return self.__get_by_multiple(searches)
+        return self._getall("emg_type", "elevator")
     
     def __get_emg(self) -> list[dict]:
         return self._getall("emg_type", "emergency")
