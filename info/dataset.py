@@ -116,7 +116,7 @@ class Dataset:
         s_elev_room = re.compile(r'(ele|elv)', re.I)
         s_emrg_bldg = re.compile(r'(EM\s*PH|EP\s|EP\w{3,4}|EMER.*PHONE)', re.I)
 
-        if re.search(line_name, s_fire_name) or re.search(line_rm, s_fire_room):
+        if re.search(s_fire_name, line_name) or re.search(s_fire_room, line_rm):
             if self.fiber.check_fiber_facp(line_bldg):
                 line.update({
                     "UC Notes": "Fire Alarm on fiber. Disconnect/reuse this line.",
@@ -127,12 +127,12 @@ class Dataset:
                     "UC Notes": "Fire alarm dialer, most likely not on fiber.",
                     "emg_type": "fire"
                 })
-        elif re.search(line_name, s_elev_name) or re.search(line_rm, s_elev_room):
+        elif re.search(s_elev_name, line_name) or re.search(s_elev_room, line_rm):
             line.update({
                 "UC Notes": "Elevator phone line. Ensure building has UPS before port.",
                 "emg_type": "elevator"
             })
-        elif re.search(line_bldg, s_emrg_bldg):
+        elif re.search(s_emrg_bldg, line_bldg):
             line.update({
                 "UC Notes": 'Blue-light/emergency phone line.',
                 "emg_type": "emergency"
