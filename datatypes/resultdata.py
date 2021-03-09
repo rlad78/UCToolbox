@@ -162,6 +162,9 @@ def get_path(name: str, extension: str, dirpath='') -> Union[None, Path]:
     if extension[0] != '.':
         extension = '.' + extension
         
+    if name[-4:] == extension:
+        name = name[:-4]
+        
     if dirpath:
         p = Path(dirpath)
         if p.is_dir():
