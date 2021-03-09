@@ -143,7 +143,7 @@ class SourceData:
                 matching_entries.append(entry)
         return matching_entries
     
-    def _except(self, category: str, regex: str, flags: int) -> list[dict]:
+    def _exclude(self, category: str, regex: str, flags: int) -> list[dict]:
         """
         Opposite functionality of self._parseall(). Will return all entries that DO NOT match the
         supplied regex for the given category. If all entries match, will return an empty list.
