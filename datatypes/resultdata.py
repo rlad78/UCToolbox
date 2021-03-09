@@ -126,7 +126,7 @@ class ResultData(SourceData):
         return self._getall("emg_type", "emergency")
     
     def __get_fiber(self) -> list[dict]:
-        return self.__getall("emg_type", "fiber")
+        return self._getall("emg_type", "fiber")
     
     def get_group(self, group: str):
         if group in self.__group_func:
