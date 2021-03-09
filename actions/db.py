@@ -12,7 +12,8 @@ def generate_db(dataset: Dataset) -> Database:
     print('Generating UCDB')
     for number in tqdm(att_lines):
         line = Line(number)
-        line.update(dataset.get_line_all(number))
+        # line.update(dataset.get_line_all(number))
+        dataset.get_line_all(line)
         db_info.append(line.info)
     db = Database(db_info, dataset)
     db.save_db()

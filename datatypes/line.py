@@ -49,7 +49,7 @@ class Line:
     def __getitem__(self, item):
         return self.info[item]
     
-    def get(self, item, default):
+    def get(self, item, default=''):
         return self.info.get(item, default)
 
     def update(self, new_info: dict) -> None:
