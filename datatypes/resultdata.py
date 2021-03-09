@@ -12,15 +12,15 @@ class ResultData(SourceData):
     def __init__(self, data: list[dict], name: str, exclude='') -> None:
         super().__init__(data)
         self.name: str = name
-        self.exclude: list[str] = exclude.replace(', ', ',').split(',')
+        self.exclusions: list[str] = exclude.replace(', ', ',').split(',')
         self.__group_func: dict[str, function] = {
             "VoIP": self.__get_voip,
             "Centrex": self.__get_centrex,
             "Elevator": self.__get_elevator,
             "Fire": self.__get_fire
         }
-        if self._data and self.exclude:
-            for remove in self.exclude:
+        if self._data and self.exclusions:
+            for remove in self.exclusions:
                 if remove in self.__group_func:
                     self.__del_from_data(self.__group_func[remove]())
         
@@ -132,6 +132,9 @@ class ResultData(SourceData):
     
     def parse(self, category: str, regex: str, flags=0):
         return ResultData(super()._parseall(category, regex, flags), f'{self.name} - Parse')
+
+    def exclude(self, category: str, regex: str, flags=0):
+        return ResultData(super()._exclude(category, regex, flags), f'{self.name} - Exclude')
 
     def group_by(self, group_type: str) -> dict:
         if group_type not in self._categories:
