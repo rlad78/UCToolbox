@@ -140,6 +140,26 @@ class SourceData:
             if re.search(searcher, entry[category]):
                 matching_entries.append(entry)
         return matching_entries
+    
+    def _except(self, category: str, regex: str, flags: int) -> list[dict]:
+        """
+        Opposite functionality of self._parseall(). Will return all entries that DO NOT match the
+        supplied regex for the given category. If all entries match, will return an empty list.
+        
+        :param category: Any str value matching a category in the csv header. Method will raise exception if
+                         category is not within the csv header.
+        :param regex: Any regular expression except for ''. self.parse() will automatically return empty
+                      dict {} if blank regex is provided.
+        :param flags: (optional) Any re.RegexFlag type object (separate out multiple flags using '|')
+        :return: List of entries satisfying the regex constraint. Returns list of all dict entries if no
+                 matching entry is found to exclude from results.
+        """
+        searcher = re.compile(regex, flags)
+        nonmatching_entries: list[dict] = []
+        for entry in self._data:
+            if not re.search(searcher, entry[category]):
+                nonmatching_entries.append(entry)
+        return nonmatching_entries
 
     def __check_category(self, *args):
         """
