@@ -3,10 +3,12 @@ import re
 
 class SourceData:
     def __init__(self, source: list[dict]):
-        if source is None or not source:
-            raise Exception(f'No data entered for {self.__class__.__name__}!')
+        # if source is None or not source:
+        #     raise Exception(f'No data entered for {self.__class__.__name__}!')
         self._data = source
-        self._categories = [x for x in self._data[0].keys()]
+        self._categories: list[str] = []
+        if self._data:
+            self._categories = [x for x in self._data[0].keys()]
 
     def __iter__(self):
         for entry in self._data:
@@ -169,6 +171,8 @@ class SourceData:
         :type args: str
         :return: None
         """
+        if not self._data:
+            return None
         for category in args:
             if category not in self._categories:
                 raise Exception(f'{category} is not a valid category for {self.__class__.__name__}\n{self._categories}')
