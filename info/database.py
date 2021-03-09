@@ -6,19 +6,19 @@ from datatypes import Location, Line
 import re
 
 
-class Database(SourceData):
+class Database(ResultData):
     def __init__(self, db: list[dict], dataset: Dataset):  # TODO: store dataset within Database class
-        super(Database, self).__init__(db)
+        super().__init__(db, "Database")
         self.dataset = dataset
 
-    def query(self, required_matches: dict) -> ResultData:
-        return ResultData(super(Database, self)._query(required_matches), "Query Data")
+    # def query(self, required_matches: dict) -> ResultData:
+    #     return ResultData(super(Database, self)._query(required_matches), "Query Data")
 
-    def parse(self, category: str, regex: str, flags: int) -> dict:
-        return super(Database, self)._parse(category, regex, flags)
+    # def parse(self, category: str, regex: str, flags: int) -> dict:
+    #     return super(Database, self)._parse(category, regex, flags)
 
-    def parseall(self, category: str, regex: str, flags: int) -> ResultData:
-        return ResultData(super(Database, self)._parseall(category, regex, flags), "Parse Data")
+    # def parseall(self, category: str, regex: str, flags: int) -> ResultData:
+    #     return ResultData(super(Database, self)._parseall(category, regex, flags), "Parse Data")
 
     def lines_by_building(self) -> dict[str, Location]:
         """
@@ -65,23 +65,28 @@ class Database(SourceData):
         else:
             p = Path().cwd() / "ucdb.csv"
 
-        if "." in p.parts[-1] and p.parent.is_dir():
-            csv_from_dicts(p, self._data)
-        elif p.is_dir():
-            csv_from_dicts(p / "ucdb.csv", self._data)
+        super().to_csv(p.name, p.parent)
+
+        # if "." in p.parts[-1] and p.parent.is_dir():
+        #     csv_from_dicts(p, self._data)
+        # elif p.is_dir():
+        #     csv_from_dicts(p / "ucdb.csv", self._data)
 
     def fire_lines(self) -> ResultData:
-        fire_name: list[dict] = self.parseall('Name', r'(fire|facp)', re.I)
-        fire_room: list[dict] = self.parseall('Room', r'(fire|alarm|alrm)', re.I)
-        return ResultData(remove_dict_dups(fire_name, fire_room), "Fire Lines")
+        # fire_name: list[dict] = self.parseall('Name', r'(fire|facp)', re.I)
+        # fire_room: list[dict] = self.parseall('Room', r'(fire|alarm|alrm)', re.I)
+        # return ResultData(remove_dict_dups(fire_name, fire_room), "Fire Lines")
+        return super().get_group("Fire")
         
     def elevator_lines(self) -> ResultData:
-        elev_name: list[dict] = self.parseall('Name', r'(elev|elv)', re.I)
-        elev_room: list[dict] = self.parseall('Room', r'(ele|elv)', re.I)
-        return ResultData(remove_dict_dups(elev_name, elev_room), "Elevator Lines")
+        # elev_name: list[dict] = self.parseall('Name', r'(elev|elv)', re.I)
+        # elev_room: list[dict] = self.parseall('Room', r'(ele|elv)', re.I)
+        # return ResultData(remove_dict_dups(elev_name, elev_room), "Elevator Lines")
+        return super().get_group("Elevator")
     
     def emergency_phones(self) -> ResultData:
-        return ResultData(self.parseall("Building", r'(EM\s*PH|EP\s|EP\w{3,4}|EMER.*PHONE)', re.I), "Emergency Phone Lines")
+        # return ResultData(self.parseall("Building", r'(EM\s*PH|EP\s|EP\w{3,4}|EMER.*PHONE)', re.I), "Emergency Phone Lines")
+        return super().get_group("Emergency")
 
     # TODO: build out more searching functionality
 
