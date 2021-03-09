@@ -17,7 +17,8 @@ class ResultData(SourceData):
             "VoIP": self.__get_voip,
             "Centrex": self.__get_centrex,
             "Elevator": self.__get_elevator,
-            "Fire": self.__get_fire
+            "Fire": self.__get_fire,
+            "Emergency": self.__get_emg,
         }
         if self._data and self.exclusions:
             for remove in self.exclusions:
@@ -117,6 +118,9 @@ class ResultData(SourceData):
             (r'(ele|elv)', 'Room')
         ]
         return self.__get_by_multiple(searches)
+    
+    def __get_emg(self) -> list[dict]:
+        return self._getall("emg_type", "emergency")
     
     def get_group(self, group: str):
         if group in self.__group_func:
