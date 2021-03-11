@@ -53,7 +53,7 @@ class ExcelWriter(XLInterface):
     def write_table(data: ResultData, sheet=None) -> int:
         pass
     
-    def append_table(data: ResultData, sheet=None, table_index=0):
+    def append_table(data: ResultData, sheet=None, table_index=1):
         pass
     
     def edit_table(entry_match: str, edit_category: str, new_value: str):
