@@ -1,7 +1,8 @@
 import xlwings as xlw
-from .__xlinterface import XLInterface
 from pathlib import Path
 import random
+from .__xlinterface import XLInterface
+from datatypes import ResultData
 
 FILETYPES: list[str] = ['.xlsx', '.xlsm', '.xls']
 
@@ -45,5 +46,18 @@ class ExcelWriter(XLInterface):
         else:
             print(f'[{__name__}.delete_sheet]: tried deleting sheet "{name if name else index}" but was not found')
             return False
-        
     
+    def write_range(data: list[list], start_point: tuple[int, int], end_point=None, sheet=None):
+        pass
+        
+    def write_table(data: ResultData, sheet=None) -> int:
+        pass
+    
+    def append_table(data: ResultData, sheet=None, table_index=0):
+        pass
+    
+    def edit_table(entry_match: str, edit_category: str, new_value: str):
+        pass
+    
+    def _check_range_empty(start_point: tuple[int, int], end_point: tuple[int, int]) -> bool:
+        pass
