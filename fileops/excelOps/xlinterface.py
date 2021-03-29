@@ -26,8 +26,9 @@ class XLInterface:
     
     def close(self) -> bool:
         if self.book is not None:
-            self.book.close
-            self.__init__()
+            self.book.close()
+            self.active = False
+            self.book = None
             return True
         else:
             return False

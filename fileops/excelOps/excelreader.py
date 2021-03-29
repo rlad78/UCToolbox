@@ -1,7 +1,7 @@
 from pathlib import Path
 import xlwings as xlw
 import pandas as pd
-from .__xlinterface import XLInterface
+from .xlinterface import XLInterface
 
 
 class ExcelReader(XLInterface):
